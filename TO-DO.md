@@ -27,7 +27,10 @@
     - User should be able to change his own name, email and stuff like that.
     - Update onw Avatar
   
-
+### Avatar 
+    - At register there should be option to chose your own avatar
+    - Change current default Avatar
+    - In Settings add preview of own profile and avatar and stuff like that
 
 
 ## Laurentiu Iordachi
