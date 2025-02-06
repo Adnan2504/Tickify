@@ -5,7 +5,9 @@
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
 
-        <a href="<?php echo Config::get('URL'); ?>note/index">Create New Ticket</a>
+        <form action="<?php echo Config::get('URL'); ?>ticket/index" method="get" style="margin: 20px">
+            <button type="submit">Create New Ticket</button>
+        </form>
 
         <?php if ($this->tickets): ?>
             <table class="ticket-table display">

@@ -7,9 +7,6 @@
         <?php $this->renderFeedbackMessages(); ?>
         <?php $availableAccType = UserModel::getAvailableAccountTypes() ?>
 
-
-        <h3>What happens here ?</h3>
-
         <div>
             <table class="overview-table">
                 <thead>

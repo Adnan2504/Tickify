@@ -50,4 +50,94 @@ class TicketModel
         return $result;
     }
 
+    /**
+     * Get a single ticket
+     * @param int $ticket_id ID of the specific ticket
+     * @return object|null A single ticket object (or null if not found)
+     */
+    public static function getTicket($ticket_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT id, subject, description, priority,  attachment_path,  category, created_by, created_at, status 
+            FROM support_tickets
+            JOIN users ON support_tickets.created_by = users.user_id
+            WHERE support_tickets.id = :ticket_id AND users.user_id = :user_id
+            LIMIT 1";
+
+
+        $query = $database->prepare($sql);
+        $query->execute(array(
+            ':ticket_id' => $ticket_id,
+            ':user_id'   => Session::get('user_id')
+        ));
+
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Update an existing ticket
+     * @param int $ticket_id ID of the specific ticket
+     * @param string $subject New subject of the ticket
+     * @param string $description New description of the ticket
+     * @param string $priority New priority of the ticket
+     * @param string|null $category New category of the ticket (optional)
+     * @return bool Feedback (was the update successful?)
+     */
+    public static function updateTicket($ticket_id, $subject, $description, $priority, $category = null)
+    {
+        if (!$ticket_id || !$subject || !$description || !$priority) {
+            return false;
+        }
+
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE support_tickets 
+            SET subject = :subject, 
+                description = :description, 
+                priority = :priority, 
+                category = :category 
+            WHERE id = :ticket_id AND created_by = :user_id 
+            LIMIT 1";
+
+        $query = $database->prepare($sql);
+        $query->execute(array(
+            ':ticket_id'   => $ticket_id,
+            ':subject'     => $subject,
+            ':description' => $description,
+            ':priority'    => $priority,
+            ':category'    => $category,
+            ':user_id'     => Session::get('user_id')
+        ));
+
+        return $query->rowCount() === 1;
+    }
+
+    /**
+     * Delete a specific ticket
+     * @param int $ticket_id ID of the ticket
+     * @return bool Feedback (was the ticket deleted successfully?)
+     */
+    public static function deleteTicket($ticket_id)
+    {
+        if (!$ticket_id) {
+            return false;
+        }
+
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "DELETE FROM support_tickets WHERE id = :ticket_id AND created_by = :user_id LIMIT 1";
+        $query = $database->prepare($sql);
+
+        $query->execute(array(':ticket_id' => $ticket_id, ':user_id' => Session::get('user_id')));
+
+        if ($query->rowCount() === 1) {
+            return true;
+        }
+
+        Session::add('feedback_negative', Text::get('FEEDBACK_TICKET_DELETION_FAILED'));
+        return false;
+    }
+
+
 }

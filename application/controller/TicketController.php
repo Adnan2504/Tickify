@@ -56,4 +56,44 @@ class TicketController extends Controller
         header('Location: ' . Config::get('URL') . 'ticket');
     }
 
+    /**
+     * This method controls what happens when you move to /ticket/edit(/XX) in your app.
+     * Shows the current content of the ticket and an editing form.
+     * @param $note_id int id of the ticket
+     */
+    public function edit($note_id)
+    {
+        $this->View->render('ticket/edit', array(
+            'ticket' => TicketModel::getTicket($note_id)
+        ));
+    }
+
+    /**
+     * This method controls what happens when you move to /ticket/editSave in your app.
+     * Edits a ticket (performs the editing after form submit).
+     * POST request.
+     */
+    public function editSave()
+    {
+        $ticket_id   = Request::post('ticket_id');
+        $subject     = Request::post('subject');
+        $description = Request::post('description');
+        $priority    = Request::post('priority');
+        $category    = Request::post('category');
+
+        TicketModel::updateTicket($ticket_id, $subject, $description, $priority, $category);
+        Redirect::to('ticket');
+    }
+
+    /**
+     * This method controls what happens when you move to /ticket/delete(/XX) in your app.
+     * Deletes a ticket. In a real application, a deletion via GET/URL is not recommended, but for demo purposes, it's okay.
+     * @param int $ticket_id ID of the ticket
+     */
+    public function delete($ticket_id)
+    {
+        TicketModel::deleteTicket($ticket_id);
+        Redirect::to('ticket');
+    }
+
 }
