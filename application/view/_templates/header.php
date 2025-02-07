@@ -14,15 +14,14 @@
     <div class="wrapper">
         <!-- navigation -->
         <ul class="navigation">
-            <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
-            </li>
-
-            <li <?php if (View::checkForActiveController($filename, "aiChat")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>aiChat/index">AI</a>
-            </li>
-
             <?php if (Session::userIsLoggedIn()) { ?>
+                <li <?php if (View::checkForActiveController($filename, "aiChat")) { echo ' class="active" '; } ?> >
+                    <a href="<?php echo Config::get('URL'); ?>aiChat/index">AI</a>
+                </li>
+                <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
+                    <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
+                </li>
+
                 <li <?php if (View::checkForActiveController($filename, "dashboard")) { echo ' class="active" '; } ?> >
                     <a href="<?php echo Config::get('URL'); ?>dashboard/index">Dashboard</a>
                 </li>

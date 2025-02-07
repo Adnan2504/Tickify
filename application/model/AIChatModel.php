@@ -22,7 +22,7 @@ class AIChatModel {
         $headers = ["Content-Type: application/json"];
 
         $data = [
-            "model" => "llama3.1:latest",
+            "model" => "deepseek-r1:8b",
             "messages" => $this->getHistory(),
             "stream" => false
         ];
