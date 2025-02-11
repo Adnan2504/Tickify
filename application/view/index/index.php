@@ -8,8 +8,8 @@
         <h3>Tickify AI</h3>
 
         <form method="post">
-            <label for="prompt">How can I help you today?:</label><br>
-            <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br><br>
+            <label for="prompt">How can I help you today?</label><br>
+            <textarea id="prompt" name="prompt" rows="10" cols="100" required></textarea><br><br>
             <input type="submit" value="Send Question">
         </form>
 
