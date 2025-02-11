@@ -142,4 +142,14 @@
             order: [[0, 'asc']],
         });
     });
+
+    const textarea = document.getElementById('prompt');
+    const form = textarea.closest('form');
+
+    textarea.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            form.submit();
+        }
+    });
 </script>
