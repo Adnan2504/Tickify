@@ -69,6 +69,19 @@ class TicketController extends Controller
     }
 
     /**
+     * This method controls what happens when you move to /ticket/edit(/XX) in your app.
+     * Shows the current content of the ticket and an editing form.
+     * @param $note_id int id of the ticket
+     */
+    public function ticket_handler($note_id)
+    {
+        $this->View->render('ticketHandler/index', array(
+            'ticket' => TicketModel::getTicket($note_id),
+            'messages' => TicketModel::getTicket($note_id)
+        ));
+    }
+
+    /**
      * This method controls what happens when you move to /ticket/editSave in your app.
      * Edits a ticket (performs the editing after form submit).
      * POST request.

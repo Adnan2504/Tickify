@@ -1,34 +1,21 @@
 <?php
 class AIChatModel {
-
-    public function __construct() {
-        if (!isset($_SESSION['history'])) {
-            $_SESSION['history'] = [
-                ["role" => "system", "content" => "You are a helpful assistant."]
-            ];
+    public static function sendPrompt($prompt, &$history) {
+        if (empty($prompt)) {
+            return ["error" => "Prompt cannot be empty."];
         }
-    }
 
-    public function addMessage($role, $content) {
-        $_SESSION['history'][] = ["role" => $role, "content" => $content];
-    }
+        $history[] = ["role" => "user", "content" => $prompt];
 
-    public function getHistory() {
-        return $_SESSION['history'];
-    }
-
-    public function sendRequest($prompt) {
         $url = "http://localhost:11434/api/chat";
         $headers = ["Content-Type: application/json"];
-
         $data = [
-            "model" => "deepseek-r1:8b",
-            "messages" => $this->getHistory(),
+            "model" => "llama3.1:latest",
+            "messages" => $history,
             "stream" => false
         ];
 
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -37,13 +24,18 @@ class AIChatModel {
 
         $response = curl_exec($ch);
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
         curl_close($ch);
 
-        if (curl_errno($ch)) {
-            throw new Exception("Curl Error: " . curl_error($ch));
+        if ($statusCode === 200) {
+            $responseData = json_decode($response, true);
+            if (isset($responseData['message']['content'])) {
+                $history[] = ["role" => "assistant", "content" => $responseData['message']['content']];
+                return ["response" => $responseData['message']['content']];
+            } else {
+                return ["error" => "Invalid response format."];
+            }
+        } else {
+            return ["error" => "HTTP Status $statusCode - $response"];
         }
-
-        return ['status' => $statusCode, 'response' => $response];
     }
 }

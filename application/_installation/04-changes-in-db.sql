@@ -51,3 +51,24 @@ INSERT INTO `user_groups_long` (`id`, `account_type`, `lang`) VALUES
 
 ALTER TABLE `user_groups_long`
     AUTO_INCREMENT = 4;
+
+
+//Messages Handler
+CREATE TABLE messages (
+                          message_id INT AUTO_INCREMENT PRIMARY KEY,
+                          ticket_id INT NOT NULL,
+                          sender_id INT NOT NULL,
+                          message_text TEXT NOT NULL,
+                          sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          attachment_path VARCHAR(255) NULL AFTER message_text,
+                          is_internal BOOLEAN DEFAULT FALSE,
+                          FOREIGN KEY (ticket_id) REFERENCES support_tickets(id),
+                          FOREIGN KEY (sender_id) REFERENCES users(user_id)
+);
+
+ALTER TABLE support_tickets ENGINE = InnoDB;
+ALTER TABLE users ENGINE = InnoDB;
+
+
+
+

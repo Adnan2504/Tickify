@@ -46,6 +46,7 @@ return array(
      * Internal path to save avatars. Make sure this folder is writable. The slash at the end is VERY important!
      */
     'PATH_AVATARS' => realpath(dirname(__FILE__).'/../../') . '/public/avatars/',
+    'PATH_IMAGES' => realpath(dirname(__FILE__).'/../../') . '/public/images/',
     'PATH_AVATARS_PUBLIC' => 'avatars/',
     /**
      * Configuration for: Default controller and action
