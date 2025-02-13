@@ -21,6 +21,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $this->View->render('dashboard/index');
+        $ticketStats = DashboardModel::getTicketStats();
+        $messageStats = DashboardModel::getMessageCount();
+
+        $this->View->render('dashboard/index', [
+            'ticketStats' => $ticketStats,
+            'messageStats' => $messageStats
+        ]);
     }
 }

@@ -2,12 +2,26 @@
     <h1>Dashboard</h1>
     <div class="box">
 
-        <!-- echo out the system feedback (error and success messages) -->
+        <!-- System Feedback Messages -->
         <?php $this->renderFeedbackMessages(); ?>
 
-        <h3>What happens here ?</h3>
-        <p>
-           Here we want to display all of our tickets for users
-        <p>
+        <div class="dashboard-stats">
+            <div class="stat-box">
+                <h2>Open Tickets</h2>
+                <p><?= htmlspecialchars($this->ticketStats['open_tickets']) ?></p>
+            </div>
+            <div class="stat-box">
+                <h2>Tickets in Progress</h2>
+                <p><?= htmlspecialchars($this->ticketStats['in_progress_tickets']) ?></p>
+            </div>
+            <div class="stat-box">
+                <h2>Solved Tickets</h2>
+                <p><?= htmlspecialchars($this->ticketStats['solved_tickets']) ?></p>
+            </div>
+            <div class="stat-box">
+                <h2>Messages Sent</h2>
+                <p><?= htmlspecialchars($this->messageStats['total_messages']) ?></p>
+            </div>
+        </div>
     </div>
 </div>
