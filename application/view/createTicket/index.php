@@ -26,11 +26,6 @@
             </label>
 
             <label>
-                Image Attachment:
-                <input type="file" name="attachment" style="flex: 1;">
-            </label>
-
-            <label>
                 Category:
                 <input type="text" name="category" style="flex: 1;">
             </label>
