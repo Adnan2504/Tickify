@@ -33,13 +33,19 @@
                 Status:
                 <select name="status" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     <option value="open" <?= $this->ticket->status == 'open' ? 'selected' : ''; ?>>Open</option>
-                    <option value="resolved" <?= $this->ticket->status == 'resolved' ? 'selected' : ''; ?>>resolved</option>
                     <option value="waiting" <?= $this->ticket->status == 'waiting' ? 'selected' : ''; ?>>waiting</option>
+                    <option value="resolved" <?= $this->ticket->status == 'resolved' ? 'selected' : ''; ?>>resolved</option>
                 </select>
             </label>
 
             <button type="submit" style="margin-top: 10px; padding: 10px 20px; background: #28a745; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
                 Update Ticket
+            </button>
+        </form>
+        <form action="<?= config::get("URL"); ?>ticketHandler/closeTicket" method="post">
+            <input type="hidden" name="ticket_id" value="<?= htmlentities($this->ticket->id); ?>">
+            <button type="submit" style="margin-top: 10px; padding: 10px 20px; background: #d60d44; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+                Close Ticket
             </button>
         </form>
     </div>

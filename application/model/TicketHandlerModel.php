@@ -84,4 +84,17 @@ class TicketHandlerModel
         return $query->rowCount() > 0;
     }
 
+    public static function closeTicket($ticket_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE support_tickets SET status = :status WHERE id = :ticket_id";
+        $query = $database->prepare($sql);
+        $query->execute([
+            ':ticket_id' => $ticket_id,
+            ':status' => 'resolved'
+        ]);
+
+        return true;
+    }
 }

@@ -126,6 +126,19 @@ class TicketHandlerController extends Controller
         Redirect::to('ticketHandler/index/' . $ticket_id);
     }
 
+    public function closeTicket()
+    {
+        $ticket_id = intval($_POST['ticket_id']);
+
+        if (TicketHandlerModel::closeTicket($ticket_id)) {
+            Session::add('feedback_positive', 'Ticket closed successfully.');
+        } else {
+            Session::add('feedback_negative', 'Failed to close ticket.');
+        }
+
+        Redirect::to('ticket/index/');
+    }
+
 
 
 
