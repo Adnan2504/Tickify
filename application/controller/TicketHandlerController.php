@@ -88,4 +88,45 @@ class TicketHandlerController extends Controller
         exit;
     }
 
+    public function updateTicket()
+    {
+        if (!isset($_POST['ticket_id'], $_POST['subject'], $_POST['description'], $_POST['priority'], $_POST['category'], $_POST['status'])) {
+            Session::add('feedback_negative', 'Missing required fields.');
+            Redirect::to('ticket/view/' . $_POST['ticket_id']);
+            return;
+        }
+
+        $ticket_id = intval($_POST['ticket_id']);
+        $subject = trim($_POST['subject']);
+        $description = trim($_POST['description']);
+        $priority = trim($_POST['priority']);
+        $category = trim($_POST['category']);
+        $status = trim($_POST['status']);
+
+        $allowed_statuses = ['open', 'waiting', 'resolved'];
+        if (!in_array($status, $allowed_statuses, true)) {
+            Session::add('feedback_negative', 'Invalid ticket status.');
+            Redirect::to('ticketHandler/index/' . $ticket_id);
+            return;
+        }
+
+        $allowed_priorities = ['low', 'mid', 'high'];
+        if (!in_array($priority, $allowed_priorities, true)) {
+            Session::add('feedback_negative', 'Invalid priority value.');
+            Redirect::to('ticketHandler/index/' . $ticket_id);
+            return;
+        }
+
+        if (TicketModel::updateTicket($ticket_id, $subject, $description, $priority,  $status, $category)) {
+            Session::add('feedback_positive', 'Ticket updated successfully.');
+        } else {
+            Session::add('feedback_negative', 'Failed to update ticket.');
+        }
+
+        Redirect::to('ticketHandler/index/' . $ticket_id);
+    }
+
+
+
+
 }

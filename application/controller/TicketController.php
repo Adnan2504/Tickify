@@ -93,8 +93,14 @@ class TicketController extends Controller
         $description = Request::post('description');
         $priority    = Request::post('priority');
         $category    = Request::post('category');
+        $status      = Request::post('status');
 
-        TicketModel::updateTicket($ticket_id, $subject, $description, $priority, $category);
+        if ($status === null) {
+            $ticket = TicketModel::getTicket($ticket_id);
+            $status = $ticket->status;
+        }
+
+        TicketModel::updateTicket($ticket_id, $subject, $description, $priority, $status, $category);
         Redirect::to('ticket');
     }
 

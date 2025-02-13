@@ -43,7 +43,7 @@ class TicketModel
             ':description' => $description,
             ':priority' => $priority,
             ':category' => $category,
-            ':status' => 'open', // status is by default set to open, admin will have option to change it
+            ':status' => 'open',
             ':created_by' => Session::get('user_id')
         ]);
 
@@ -81,10 +81,11 @@ class TicketModel
      * @param string $subject New subject of the ticket
      * @param string $description New description of the ticket
      * @param string $priority New priority of the ticket
+     * @param string $status New status of the ticket
      * @param string|null $category New category of the ticket (optional)
      * @return bool Feedback (was the update successful?)
      */
-    public static function updateTicket($ticket_id, $subject, $description, $priority, $category = null)
+    public static function updateTicket($ticket_id, $subject, $description, $priority, $status, $category = null)
     {
         if (!$ticket_id || !$subject || !$description || !$priority) {
             return false;
@@ -93,25 +94,27 @@ class TicketModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $sql = "UPDATE support_tickets 
-            SET subject = :subject, 
-                description = :description, 
-                priority = :priority, 
-                category = :category 
-            WHERE id = :ticket_id AND created_by = :user_id 
-            LIMIT 1";
+        SET subject = :subject, 
+            description = :description, 
+            priority = :priority, 
+            category = :category,
+            status = :status 
+        WHERE id = :ticket_id
+        LIMIT 1";
 
         $query = $database->prepare($sql);
-        $query->execute(array(
+        $query->execute([
             ':ticket_id'   => $ticket_id,
             ':subject'     => $subject,
             ':description' => $description,
             ':priority'    => $priority,
             ':category'    => $category,
-            ':user_id'     => Session::get('user_id')
-        ));
+            ':status'      => $status
+        ]);
 
         return $query->rowCount() === 1;
     }
+
 
     /**
      * Delete a specific ticket

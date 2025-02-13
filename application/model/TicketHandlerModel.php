@@ -67,4 +67,21 @@ class TicketHandlerModel
 
         return $query->fetch();
     }
+
+    public static function updateTicket($ticket_id, $subject, $description, $status)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE support_tickets SET subject = :subject, description = :description, status = :status WHERE id = :ticket_id";
+        $query = $database->prepare($sql);
+        $query->execute([
+            ':ticket_id' => $ticket_id,
+            ':subject' => $subject,
+            ':description' => $description,
+            ':status' => $status
+        ]);
+
+        return $query->rowCount() > 0;
+    }
+
 }
