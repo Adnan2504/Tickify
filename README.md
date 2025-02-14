@@ -21,8 +21,6 @@ Datum|AP NR| Zeitraum    | Aufwand  |Ort| Tätigkeit                            
 
 
 
-
-
                                                                                                                            |  |
 
 
