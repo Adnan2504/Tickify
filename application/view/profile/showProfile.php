@@ -1,12 +1,12 @@
 <div class="container">
-    <h1>ProfileController/showProfile/:id</h1>
+    <h1>Profile</h1>
     <div class="box">
 
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
 
         <h3>What happens here ?</h3>
-        <div>This controller/action/view shows all public information about a certain user.</div>
+        <div><?= $this->user->user_name . "'s Profile" ?></div>
 
         <?php if ($this->user) { ?>
             <div>
@@ -17,7 +17,6 @@
                         <td>Avatar</td>
                         <td>Username</td>
                         <td>User's email</td>
-                        <td>Activated ?</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,7 +29,6 @@
                             </td>
                             <td><?= $this->user->user_name; ?></td>
                             <td><?= $this->user->user_email; ?></td>
-                            <td><?= ($this->user->user_active == 0 ? 'No' : 'Yes'); ?></td>
                         </tr>
                     </tbody>
                 </table>
