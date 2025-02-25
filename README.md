@@ -15,14 +15,8 @@ Datum|AP NR| Zeitraum    | Aufwand  |Ort| Tätigkeit                            
 7.2.2025|3.1| 14:40-16:15 | 1h30min  |LBS| GitHub config. TO-DOs überlegt, Status überprüft                                                                                                                                                                                                                                                                                                                                                                                                                                                            |  |
 8.2.2025|3.1| 10:00-12:20 | 2h20min  |LBS| AI-Integration auf der Hauptseite umgesetzt. Nach einer AI-Antwort erscheint ein Button mit der Option Crete New Ticket. Messenger für Tickets wurde implementiert. Die Bild-Logik implementiert, Bilder werden im Chat direkt zusammen mit dem Text angezeigt und nicht separat.  Chat für Tickets wird auf Click auf ein Item in der jQuery-Tabelle geöffnet. UI-Anpassungen, AI-Chat ist jetzt als standalone verfügbar.soll wurde ich das am besten schieben                                            |  |
 13.2.2025|3.1| 09:25-12:50 | 3h       |LBS| Habe  einen Ticket schließen btn für den Support implementiert, ein Bearbeitungsmenü in Ticket-Chat für Administratoren und Moderatoren hinzugefügt, die Registrierung auf Administratoren beschränkt und das Standard-Captcha entfernt, einen Fehler im Header der Registrierungsseite behoben sowie ein Dashboard mit Statistik-Daten implementiert(resolved, opened, etc...).                                                                                                                            |  |
-14.2.2025|3.1| 07:30-10:15 | 2h       |LBS| Header und Profilansicht aktualisieren sowie Rollen als Text statt als Zahl anzeigen.
-
-
-
-
-
-                                                                                                                           |  |
-
+14.2.2025|3.1| 07:30-10:15 | 2h       |LBS| Header und Profilansicht aktualisieren sowie Rollen als Text statt als Zahl anzeigen.                                                                                                                                                                                                                                                                                                                                                                                                                       
+25.2.2025|3.1| 10:00-12:20 | 2h       |LBS| Text verbessert. UI änderungen. Code Clean-up, AI Chat angepasst                                                                                                                                                                                                                                                                                                                                                                                                                                            |  |
 
 ## Laurentiu Iordachi
 ---

@@ -51,7 +51,6 @@
     </div>
     <?php endif; ?>
 
-
     <div style="width: 70%; padding: 20px;">
         <h1>Ticket: <?= htmlentities($this->ticket->subject); ?> (#<?= htmlentities($this->ticket->id); ?>)</h1>
         <div class="box">

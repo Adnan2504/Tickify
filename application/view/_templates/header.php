@@ -15,9 +15,7 @@
         <!-- navigation -->
         <ul class="navigation">
             <?php if (Session::userIsLoggedIn()) { ?>
-                <li <?php if (View::checkForActiveController($filename, "aiChat")) { echo ' class="active" '; } ?> >
-                    <a href="<?php echo Config::get('URL'); ?>aiChat/index">AI</a>
-                </li>
+
                 <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
                     <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
                 </li>
@@ -27,6 +25,9 @@
                 </li>
                 <li <?php if (View::checkForActiveController($filename, "ticket")) { echo ' class="active" '; } ?> >
                     <a href="<?php echo Config::get('URL'); ?>ticket/index">Ticket List</a>
+                </li>
+                <li <?php if (View::checkForActiveController($filename, "aiChat")) { echo ' class="active" '; } ?> >
+                    <a href="<?php echo Config::get('URL'); ?>aiChat/index">AI</a>
                 </li>
             <?php } else { ?>
                 <!-- for not logged in users -->
@@ -78,9 +79,8 @@
             <?php endif; ?>
         <?php endif; ?>
 
-            <!-- Moderator -->
+            <!-- Moderator und Admin -->
             <?php if (Session::get("user_account_type") >= 5) : ?>
-
 
             <?php if (Session::userIsLoggedIn()) { ?>
             <li <?php if (View::checkForActiveController($filename, "profile")) { echo ' class="active" '; } ?> >
@@ -88,7 +88,6 @@
             </li>
 
             <?php } ?>
-
             <?php endif; ?>
 
         </ul>

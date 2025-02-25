@@ -1,7 +1,6 @@
 <div class="container">
     <h1>All Users</h1>
     <div class="box">
-
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
         <?php $availableAccType = UserModel::getAvailableAccountTypes() ?>
@@ -36,7 +35,6 @@
                             </td>
                             <td>
                                 <span><?= htmlspecialchars(UserModel::getAccountTypeLang($availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?></span>
-
                             </td>
                             <td>
                                 <a href="<?= Config::get('URL') . 'profile/showProfile/' . $user->user_id; ?>">Profile</a>

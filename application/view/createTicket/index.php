@@ -1,9 +1,7 @@
 <div class="container">
     <div class="box">
-
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
-
 
         <form action="<?= config::get("URL"); ?>ticket/createTicket" method="post" style="display: flex; flex-direction: column; gap: 10px; width: 400px; margin: 0 auto;">
             <label>
@@ -32,7 +30,5 @@
 
             <button type="submit" style="padding: 10px;">Submit</button>
         </form>
-
-
     </div>
 </div>

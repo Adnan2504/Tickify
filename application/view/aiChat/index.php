@@ -2,11 +2,10 @@
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
 
-
 <h1>Ollama Model Test</h1>
 <form method="post">
-    <label for="prompt">Question:</label><br>
-    <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br><br>
+    <label for="prompt"><h2>Question:</h2></label>
+    <textarea id="prompt" name="prompt" rows="10" cols="100" required></textarea><br><br>
     <input type="submit" value="Send Question">
 </form>
 
@@ -36,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -76,4 +74,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 </div>
-
