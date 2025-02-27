@@ -22,6 +22,24 @@ Datum|AP NR| Zeitraum    | Aufwand  |Ort| Tätigkeit                            
 ---
 Datum|AP NR|Zeitraum|Aufwand|Ort|Tätigkeit|Probleme|Quellen
 -----|-----|--------|-------|---|---------|--------|-------
-1.1.2023|1.1|7:30-10:00|2h15min|LBS|Ideenfindung|mir fällt nichts ein|[Projektmanagement](https://de.wikipedia.org/wiki/Projektmanagement)
-1.1.2023|1.1|7:30-10:00|2h15min|LBS|Ideenfindung|mir fällt nichts ein|[Projektmanagement](https://de.wikipedia.org/wiki/Projektmanagement)
-1.1.2023|1.1|7:30-10:00|2h15min|LBS|Ideenfindung|mir fällt nichts ein|[Projektmanagement](https://de.wikipedia.org/wiki/Projektmanagement)
+4.2.2025|1.1|10:00-12:20|2h15min|LBS|Ideenfindung, Backend Prep, Commits||
+
+4.2.2025|1.1|13:20-16:25|3h5min|LBS|WAMP & VC++ Packages installiert, danach die Datenbank Verbindung mit einem Skript dass sich das Projekt sich automatisch mit dem Datenbank verbindet und auch die Tabellen erstellen falls die nicht vorhanden sind||
+
+5.2.2025|1.2|08:15-09:00|45min|LBS|Projektziele definieren||
+
+5.2.2025|1.2|10:50-11:35|45min|LBS|Projektziele definieren||
+
+6.2.2025|3.2|09:25-12:50|4h25min|LBS|Design Probe erstellt||
+
+7.2.2025|3.2|07:30-10:15|2h|LBS|GUI|Tailwind Probleme|
+
+7.2.2025|1.1|14:40-16:15|1h30min|LBS|GUI||
+
+8.2.2025|2.4|7:30-10:00|2h15min|LBS|Arbeitspakete beschrieben||
+
+13.2.2025|/|/|/|/|krank||
+
+14.2.2025|/|/|/|/|krank||
+
+
