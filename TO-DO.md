@@ -33,6 +33,13 @@
     - In Settings add preview of own profile and avatar and stuff like that
 
 
+### TO-DO
+    - Admin/Mod should be able to see all tickets
+    - User should have option to se only his own tickets that he created
+    - #Settings
+    - #Avatar
+
+
 ## Laurentiu Iordachi
 - DESIGN
 - Placeholder
