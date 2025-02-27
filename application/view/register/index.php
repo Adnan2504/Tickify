@@ -1,18 +1,58 @@
-<div class="container">
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
-    <!-- login box on left side -->
-    <div class="login-box" style="width: 50%; display: block;">
-        <h2>Create a new account</h2>
-        <!-- register form -->
-        <form method="post" action="<?php echo Config::get('URL'); ?>register/register_action">
-            <!-- the user name input field uses a HTML5 pattern check -->
-            <input type="text" pattern="[a-zA-Z0-9]{2,64}" name="user_name" placeholder="Username (letters/numbers, 2-64 chars)" required />
-            <input type="text" name="user_email" placeholder="Email address (a real address)" required />
-            <input type="text" name="user_email_repeat" placeholder="Repeat email address (to prevent typos)" required />
-            <input type="password" name="user_password_new" pattern=".{6,}" placeholder="Password (6+ characters)" required autocomplete="off" />
-            <input type="password" name="user_password_repeat" pattern=".{6,}" required placeholder="Repeat password" autocomplete="off" />
-            <input type="submit" value="Register" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Your App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>application/view/register/style.css">
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white shadow-lg rounded-xl p-8 transition-all duration-200 hover:shadow-2xl">
+      <!-- System feedback (error and success messages) -->
+      <?php $this->renderFeedbackMessages(); ?>
+
+      <!-- Registration Section -->
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold mb-2 text-center">Register</h1>
+        <p class="text-center text-gray-600 mb-4">Create an account to get started</p>
+        <form action="<?php echo Config::get('URL'); ?>register/index" method="post" class="space-y-4">
+          <div class="form-group">
+            <label for="user_name" class="block text-gray-700 text-center">Username</label>
+            <input type="text" id="user_name" name="user_name" placeholder="Enter your username" required
+                   class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+          </div>
+          <div class="form-group">
+            <label for="user_email" class="block text-gray-700 text-center">Email</label>
+            <input type="email" id="user_email" name="user_email" placeholder="Enter your email" required
+                   class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+          </div>
+          <div class="form-group">
+            <label for="user_password" class="block text-gray-700 text-center">Password</label>
+            <input type="password" id="user_password" name="user_password" placeholder="Enter your password" required
+                   class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+          </div>
+          <div class="form-group">
+            <label for="user_password_repeat" class="block text-gray-700 text-center">Repeat Password</label>
+            <input type="password" id="user_password_repeat" name="user_password_repeat" placeholder="Repeat your password" required
+                   class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+          </div>
+          <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>">
+          <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-all duration-200 hover:scale-105">
+            Register
+          </button>
         </form>
+      </div>
+
+      <!-- Login Redirect -->
+      <div class="text-center">
+        <p class="text-gray-600">Already have an account?</p>
+        <a href="<?php echo Config::get('URL'); ?>login/index" class="text-blue-500 hover:underline transition-transform hover:scale-105">
+          Login here
+        </a>
+      </div>
     </div>
-</div>
+  </div>
+</body>
+</html>
