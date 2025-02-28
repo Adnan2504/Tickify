@@ -53,12 +53,14 @@
                     </ul>
                 </li>
                 <?php if (Session::get('user_account_type') == 7) : ?>
-                    <li>
-                        <a href="<?php echo Config::get('URL'); ?>admin/" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Admin</a>
+                    <li class="relative group">
+                        <a href="#" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Admin</a>
+                        <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-2 group-hover:block w-48 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-50" onmouseover="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
+                            <li><a href="<?php echo Config::get('URL'); ?>admin/" class="block p-3 hover:bg-gray-200">Admin Panel</a></li>
+                            <li><a href="<?php echo Config::get('URL'); ?>register/index" class="block p-3 hover:bg-gray-200">Register User</a></li>
+                        </ul>
                     </li>
-                    <li>
-                        <a href="<?php echo Config::get('URL'); ?>register/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Register</a>
-                    </li>
+
                 <?php endif; ?>
             <?php endif; ?>
 
