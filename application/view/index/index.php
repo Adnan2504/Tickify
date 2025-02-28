@@ -137,8 +137,8 @@
     $(document).ready(function () {
         $('.ticket-table').DataTable({
             responsive: true,
-            paging: true,
-            searching: true,
+            paging: false,
+            searching: false,
             order: [[0, 'asc']],
         });
     });

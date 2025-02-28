@@ -73,14 +73,12 @@ class TicketModel
         $sql = "SELECT id, subject, description, priority,  attachment_path,  category, created_by, created_at, status 
             FROM support_tickets
             JOIN users ON support_tickets.created_by = users.user_id
-            WHERE support_tickets.id = :ticket_id AND users.user_id = :user_id
+            WHERE support_tickets.id = :ticket_id
             LIMIT 1";
-
 
         $query = $database->prepare($sql);
         $query->execute(array(
             ':ticket_id' => $ticket_id,
-            ':user_id'   => Session::get('user_id')
         ));
 
         return $query->fetch(PDO::FETCH_OBJ);
