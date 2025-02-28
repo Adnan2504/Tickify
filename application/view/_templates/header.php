@@ -4,91 +4,71 @@
     <title>Tickify</title>
     <!-- META -->
     <meta charset="utf-8">
-    <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
     <link rel="icon" href="data:;base64,=">
-    <!-- CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
 </head>
-<body>
-<!-- wrapper, to center website -->
-<div class="wrapper">
-    <!-- navigation -->
-    <ul class="navigation">
-        <?php if (Session::userIsLoggedIn()) { ?>
-            <li <?php if (View::checkForActiveController($filename, "aiChat")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>aiChat/index">AI</a>
-            </li>
-            <li <?php if (View::checkForActiveController($filename, "index")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>index/index">Index</a>
-            </li>
+<body class="bg-gray-100">
+<!-- Header -->
+<header class="bg-white shadow-md rounded-lg p-5 mb-6 flex justify-between items-center text-lg relative z-50">
+    <!-- Brand Name -->
+    <div class="text-2xl font-extrabold text-gray-900">Tickify</div>
 
-            <li <?php if (View::checkForActiveController($filename, "dashboard")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>dashboard/index">Dashboard</a>
-            </li>
-            <li <?php if (View::checkForActiveController($filename, "ticket")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>ticket/index">Ticket List</a>
-            </li>
-        <?php } else { ?>
-            <!-- for not logged in users -->
-            <li <?php if (View::checkForActiveControllerAndAction($filename, "login/index")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>login/index">Login</a>
-            </li>
-        <?php } ?>
-    </ul>
-
-    <!-- my account -->
-    <ul class="navigation right">
-        <?php if (Session::userIsLoggedIn()) : ?>
-            <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>user/index">Settings</a>
-                <ul class="navigation-submenu">
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/editAvatar">Edit your avatar</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/editusername">Edit my username</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/edituseremail">Edit my email</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/changePassword">Change Password</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/logout">Logout</a>
-                    </li>
-                </ul>
-            </li>
-            <!-- Admin -->
-            <?php if (Session::get("user_account_type") == 7) : ?>
-                <li <?php if (View::checkForActiveController($filename, "admin")) {
-                    echo ' class="active" ';
-                } ?> >
-                    <a href="<?php echo Config::get('URL'); ?>admin/">Admin</a>
-                </li>
-
-                <li <?php if (View::checkForActiveControllerAndAction($filename, "register/index")) { echo ' class="active" '; } ?> >
-                    <a href="<?php echo Config::get('URL'); ?>register/index">Register</a>
-                </li>
-
-                <?php if (Session::userIsLoggedIn()) { ?>
-
-                <?php } ?>
-
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <!-- Moderator -->
-        <?php if (Session::get("user_account_type") >= 5) : ?>
-
-
+    <!-- Navigation -->
+    <nav>
+        <ul class="flex space-x-4">
             <?php if (Session::userIsLoggedIn()) { ?>
-                <li <?php if (View::checkForActiveController($filename, "profile")) { echo ' class="active" '; } ?> >
-                    <a href="<?php echo Config::get('URL'); ?>profile/index">Profiles</a>
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>aiChat/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">AI</a>
                 </li>
-
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>index/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Index</a>
+                </li>
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>dashboard/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Dashboard</a>
+                </li>
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>ticket/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Ticket List</a>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>login/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Login</a>
+                </li>
             <?php } ?>
+        </ul>
+    </nav>
 
-        <?php endif; ?>
+    <!-- Right Navigation -->
+    <nav>
+        <ul class="flex space-x-4">
+            <?php if (Session::userIsLoggedIn()) : ?>
+                <li class="relative group">
+                    <a href="#" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Settings</a>
+                    <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-2 group-hover:block w-48 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-50" onmouseover="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
+                        <li><a href="<?php echo Config::get('URL'); ?>user/editAvatar" class="block p-3 hover:bg-gray-200">Edit Avatar</a></li>
+                        <li><a href="<?php echo Config::get('URL'); ?>user/editusername" class="block p-3 hover:bg-gray-200">Edit Username</a></li>
+                        <li><a href="<?php echo Config::get('URL'); ?>user/edituseremail" class="block p-3 hover:bg-gray-200">Edit Email</a></li>
+                        <li><a href="<?php echo Config::get('URL'); ?>user/changePassword" class="block p-3 hover:bg-gray-200">Change Password</a></li>
+                        <li><a href="<?php echo Config::get('URL'); ?>login/logout" class="block p-3 hover:bg-red-100 text-red-600">Logout</a></li>
+                    </ul>
+                </li>
+                <?php if (Session::get('user_account_type') == 7) : ?>
+                    <li>
+                        <a href="<?php echo Config::get('URL'); ?>admin/" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Admin</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo Config::get('URL'); ?>register/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Register</a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
 
-    </ul>
+            <?php if (Session::get('user_account_type') >= 5) : ?>
+                <li>
+                    <a href="<?php echo Config::get('URL'); ?>profile/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Profiles</a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>
+</body>
+</html>
