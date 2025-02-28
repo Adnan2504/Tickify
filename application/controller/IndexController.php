@@ -18,8 +18,12 @@ class IndexController extends Controller
      */
     public function index()
     {
+        //Save only the last 3 tickets (-3 from the end and 3 ist the length)
+        $allTickets = TicketModel::getAllTickets();
+        $latestTickets = array_slice($allTickets, -3, 3);
+
         $this->View->render('index/index', array(
-            'tickets' => TicketModel::getAllTickets()
+            'tickets' => $latestTickets
         ));
     }
 }
