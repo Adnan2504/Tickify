@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Tickify</title>
-    <!-- META -->
     <meta charset="utf-8">
     <link rel="icon" href="data:;base64,=">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,41 +9,27 @@
 </head>
 <body class="bg-gray-100">
 <!-- Header -->
-<header class="bg-white shadow-md rounded-lg p-5 mb-6 flex justify-between items-center text-lg relative z-50">
-    <!-- Brand Name -->
-    <div class="text-2xl font-extrabold text-gray-900">Tickify</div>
+<header class="bg-white shadow-md rounded-lg p-5 mb-6 flex items-center text-lg relative z-50">
+    <!-- Brand Name (Now clickable) -->
+    <a href="<?php echo Config::get('URL'); ?>index/index" class="text-2xl font-extrabold text-gray-900 hover:text-blue-500 transition-all absolute left-5">Tickify</a>
 
-    <!-- Navigation -->
-    <nav>
-        <ul class="flex space-x-4">
-            <?php if (Session::userIsLoggedIn()) { ?>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>aiChat/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">AI</a>
-                </li>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>index/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Index</a>
-                </li>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>dashboard/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Dashboard</a>
-                </li>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>ticket/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Ticket List</a>
-                </li>
-            <?php } else { ?>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>login/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Login</a>
-                </li>
-            <?php } ?>
+    <!-- Middle Navigation (Perfectly Centered) -->
+    <nav class="mx-auto">
+        <ul class="flex space-x-14">
+            <li><a href="<?php echo Config::get('URL'); ?>index/index" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Index</a></li>
+            <li><a href="<?php echo Config::get('URL'); ?>dashboard/index" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Dashboard</a></li>
+            <li><a href="<?php echo Config::get('URL'); ?>ticket/index" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Ticket List</a></li>
+            <li><a href="<?php echo Config::get('URL'); ?>aiChat/index" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">AI</a></li>
         </ul>
     </nav>
 
     <!-- Right Navigation -->
-    <nav>
-        <ul class="flex space-x-4">
+    <nav class="absolute right-5">
+        <ul class="flex space-x-10">
             <?php if (Session::userIsLoggedIn()) : ?>
                 <li class="relative group">
-                    <a href="#" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Settings</a>
-                    <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-2 group-hover:block w-48 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-50" onmouseover="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
+                    <a href="#" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Settings</a>
+                    <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-1 w-48 right-0 group-hover:block opacity-100 transition-opacity duration-200 ease-in-out z-50">
                         <li><a href="<?php echo Config::get('URL'); ?>user/editAvatar" class="block p-3 hover:bg-gray-200">Edit Avatar</a></li>
                         <li><a href="<?php echo Config::get('URL'); ?>user/editusername" class="block p-3 hover:bg-gray-200">Edit Username</a></li>
                         <li><a href="<?php echo Config::get('URL'); ?>user/edituseremail" class="block p-3 hover:bg-gray-200">Edit Email</a></li>
@@ -54,20 +39,16 @@
                 </li>
                 <?php if (Session::get('user_account_type') == 7) : ?>
                     <li class="relative group">
-                        <a href="#" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Admin</a>
-                        <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-2 group-hover:block w-48 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out z-50" onmouseover="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
+                        <a href="#" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Admin</a>
+                        <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-1 w-48 right-0 group-hover:block opacity-100 transition-opacity duration-200 ease-in-out z-50">
                             <li><a href="<?php echo Config::get('URL'); ?>admin/" class="block p-3 hover:bg-gray-200">Admin Panel</a></li>
                             <li><a href="<?php echo Config::get('URL'); ?>register/index" class="block p-3 hover:bg-gray-200">Register User</a></li>
                         </ul>
                     </li>
-
                 <?php endif; ?>
-            <?php endif; ?>
-
-            <?php if (Session::get('user_account_type') >= 5) : ?>
-                <li>
-                    <a href="<?php echo Config::get('URL'); ?>profile/index" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-blue-500 hover:text-white hover:scale-105 transition-all font-semibold hover:shadow-md">Profiles</a>
-                </li>
+                <?php if (Session::get('user_account_type') >= 5) : ?>
+                    <li><a href="<?php echo Config::get('URL'); ?>profile/index" class="px-8 py-3 bg-gray-100 rounded-lg hover:bg-gray-300 hover:text-gray-800 hover:scale-105 transition-all font-semibold hover:shadow-md">Profiles</a></li>
+                <?php endif; ?>
             <?php endif; ?>
         </ul>
     </nav>
