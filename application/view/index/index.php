@@ -1,7 +1,6 @@
 <div class="container">
     <h1>Tickify</h1>
-    <div class="box" style="max-width: 1000px; margin: 0 auto; text-align: center;">
-
+    <div class="box" style="max-width: 1000px; margin: 0 auto; text-align: center; border: none">
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
 
