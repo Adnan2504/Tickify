@@ -14,10 +14,21 @@ class TicketModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "SELECT id, subject, description, priority, category,status , created_at FROM support_tickets WHERE created_by = :user_id";
-        $query = $database->prepare($sql);
+        //Admin und User sehen alle Tickets
+        if (Session::get("user_account_type") >= 5){
+            $sql = "SELECT id, subject, description, priority, category,status , created_at FROM support_tickets";
+            $query = $database->prepare($sql);
+            $query->execute();
+        }
+        //User sieht nur seine eigenen Tickets
+        else{
+            $sql = "SELECT id, subject, description, priority, category,status , created_at FROM support_tickets WHERE created_by = :user_id";
+            $query = $database->prepare($sql);
+            $query->execute(array(':user_id' => Session::get('user_id')));
+        }
 
-        $query->execute(array(':user_id' => Session::get('user_id')));
+
+
 
         return $query->fetchAll();
     }
