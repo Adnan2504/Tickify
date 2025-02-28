@@ -1,16 +1,16 @@
 <div class="container">
     <h1>Tickify</h1>
-    <div class="box">
+    <div class="box" style="max-width: 1000px; margin: 0 auto; text-align: center;">
 
         <!-- echo out the system feedback (error and success messages) -->
         <?php $this->renderFeedbackMessages(); ?>
 
         <h3>Tickify AI</h3>
 
-        <form method="post">
-            <label for="prompt">How can I help you today?</label><br>
-            <textarea id="prompt" name="prompt" rows="10" cols="100" required></textarea><br><br>
-            <input type="submit" value="Send Question">
+        <form method="post" style="margin: 20px 0;">
+            <label for="prompt" style="font-size: 16px; font-weight: bold;">How can I help you today?</label><br>
+            <textarea id="prompt" name="prompt" rows="10" cols="100" required style="width: 90%; margin: 10px auto; padding: 10px;"></textarea><br><br>
+            <input type="submit" value="Send Question" style="padding: 8px 15px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px;">
         </form>
 
         <?php
@@ -48,7 +48,9 @@
                 $response = curl_exec($ch);
 
                 if (curl_errno($ch)) {
+                    echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
                     echo "<p><strong>Error:</strong> " . htmlspecialchars(curl_error($ch)) . "</p>";
+                    echo "</div>";
                 } else {
                     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
@@ -58,40 +60,51 @@
                         if (isset($responseData['message']['content'])) {
                             $_SESSION['history'][] = ["role" => "assistant", "content" => $responseData['message']['content']];
 
-                            echo "<h2>Question: $prompt</h2>";
+                            echo "<div style='text-align: left; margin: 20px auto; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px; background-color: #f8f9fa;'>";
+                            echo "<h2 style='color: #007bff;'>Question:</h2>";
+                            echo "<p style='margin-bottom: 20px;'>" . htmlspecialchars($prompt) . "</p>";
 
-                            echo "<h2>Response:</h2>";
-                            echo "<p>" . nl2br(htmlspecialchars($responseData['message']['content'])) . "</p>";
+                            echo "<h2 style='color: #28a745;'>Response:</h2>";
+                            echo "<p style='white-space: pre-wrap;'>" . nl2br(htmlspecialchars($responseData['message']['content'])) . "</p>";
+                            echo "</div>";
 
                             echo "<div style='margin-top: 20px;'>";
                             echo "<h3>Was your question solved?</h3>";
-                            echo "<form action='" . Config::get('URL') . "createTicket/index' method='get' style='display: inline-block; margin-right: 10px;'>";
-                            echo "<button type='submit'>No, Create New Ticket</button>";
+                            echo "<div style='display: flex; justify-content: center; gap: 10px;'>";
+                            echo "<form action='" . Config::get('URL') . "createTicket/index' method='get' style='display: inline-block;'>";
+                            echo "<button type='submit' style='padding: 8px 15px; cursor: pointer; background-color: #dc3545; color: white; border: none; border-radius: 4px;'>No, Create New Ticket</button>";
                             echo "</form>";
-                            echo "<form action='" . Config::get('URL') . "index/index' method='get' style='display: inline-block; margin-right: 10px;'>";
-                            echo "<button type='submit'>Yes, my question was solved</button>";
+                            echo "<form action='" . Config::get('URL') . "index/index' method='get' style='display: inline-block;'>";
+                            echo "<button type='submit' style='padding: 8px 15px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 4px;'>Yes, my question was solved</button>";
                             echo "</form>";
+                            echo "</div>";
                             echo "</div>";
 
                             unset($_SESSION['history']);
 
                         } else {
+                            echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
                             echo "<p><strong>Error:</strong> Invalid response format.</p>";
+                            echo "</div>";
                         }
                     } else {
+                        echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
                         echo "<p><strong>Error:</strong> HTTP Status $statusCode - " . htmlspecialchars($response) . "</p>";
+                        echo "</div>";
                     }
                 }
 
                 curl_close($ch);
             } else {
+                echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
                 echo "<p><strong>Error:</strong> Please enter a question.</p>";
+                echo "</div>";
             }
         }
         ?>
 
         <?php if ($this->tickets): ?>
-            <table class="ticket-table display">
+            <table class="ticket-table display" style="width: 100%; margin: 20px 0;">
                 <thead>
                 <tr>
                     <th>ID</th>
