@@ -54,16 +54,8 @@
                 <!-- Category field -->
                 <div class="mb-6">
                     <label for="category" class="block text-gray-700 font-medium mb-2">Change Category:</label>
-                    <select id="category" name="category"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <?php
-                        $categories = ['billing' => 'Billing & Returns', 'technical' => 'Technical Support', 'general' => 'General Inquiry'];
-                        foreach ($categories as $value => $label) {
-                            $selected = ($this->ticket->category == $value) ? 'selected' : '';
-                            echo "<option value=\"$value\" $selected>$label</option>";
-                        }
-                        ?>
-                    </select>
+                    <input type="text" id="subject" name="subject" value="<?php echo htmlentities($this->ticket->category); ?>" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
                 <!-- Submit button -->
