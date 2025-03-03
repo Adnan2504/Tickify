@@ -1,167 +1,259 @@
-<div class="container">
-    <h1>Tickify</h1>
-    <div class="box" style="max-width: 1000px; margin: 0 auto; text-align: center; border: none">
-        <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages(); ?>
+<?php
+// start output buffering at the very beginning of the file
+ob_start();
+?>
+    <div class="w-full px-4">
+        <h1 class="text-center text-3xl font-bold mt-6 mb-4">Tickify</h1>
+        <div class="w-full mx-auto text-center">
+            <!-- echo out the system feedback (error and success messages) -->
+            <?php $this->renderFeedbackMessages(); ?>
 
-        <h3>Tickify AI</h3>
-
-        <form method="post" style="margin: 20px 0;">
-            <label for="prompt" style="font-size: 16px; font-weight: bold;">How can I help you today?</label><br>
-            <textarea id="prompt" name="prompt" rows="10" cols="100" required style="width: 90%; margin: 10px auto; padding: 10px;"></textarea><br><br>
-            <input type="submit" value="Send Question" style="padding: 8px 15px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px;">
-        </form>
-
-        <?php
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            if (!isset($_SESSION['history'])) {
-                $_SESSION['history'] = [
-                    ["role" => "system", "content" => "You are a helpful assistant."]
-                ];
-            }
-
-            $prompt = trim($_POST['prompt']);
-
-            if (!empty($prompt)) {
-                $_SESSION['history'][] = ["role" => "user", "content" => $prompt];
-
-                $url = "http://localhost:11434/api/chat";
-                $headers = ["Content-Type: application/json"];
-
-                $data = [
-                    "model" => "llama3.1:latest",
-                    "messages" => $_SESSION['history'],
-                    "stream" => false
-                ];
-
-                $ch = curl_init();
-
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-                $response = curl_exec($ch);
-
-                if (curl_errno($ch)) {
-                    echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
-                    echo "<p><strong>Error:</strong> " . htmlspecialchars(curl_error($ch)) . "</p>";
-                    echo "</div>";
-                } else {
-                    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-                    if ($statusCode === 200) {
-                        $responseData = json_decode($response, true);
-
-                        if (isset($responseData['message']['content'])) {
-                            $_SESSION['history'][] = ["role" => "assistant", "content" => $responseData['message']['content']];
-
-                            echo "<div style='text-align: left; margin: 20px auto; padding: 15px; border: 1px solid #dee2e6; border-radius: 5px; background-color: #f8f9fa;'>";
-                            echo "<h2 style='color: #007bff;'>Question:</h2>";
-                            echo "<p style='margin-bottom: 20px;'>" . htmlspecialchars($prompt) . "</p>";
-
-                            echo "<h2 style='color: #28a745;'>Response:</h2>";
-                            echo "<p style='white-space: pre-wrap;'>" . nl2br(htmlspecialchars($responseData['message']['content'])) . "</p>";
-                            echo "</div>";
-
-                            echo "<div style='margin-top: 20px;'>";
-                            echo "<h3>Was your question solved?</h3>";
-                            echo "<div style='display: flex; justify-content: center; gap: 10px;'>";
-                            echo "<form action='" . Config::get('URL') . "createTicket/index' method='get' style='display: inline-block;'>";
-                            echo "<button type='submit' style='padding: 8px 15px; cursor: pointer; background-color: #dc3545; color: white; border: none; border-radius: 4px;'>No, Create New Ticket</button>";
-                            echo "</form>";
-                            echo "<form action='" . Config::get('URL') . "index/index' method='get' style='display: inline-block;'>";
-                            echo "<button type='submit' style='padding: 8px 15px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 4px;'>Yes, my question was solved</button>";
-                            echo "</form>";
-                            echo "</div>";
-                            echo "</div>";
-
-                            unset($_SESSION['history']);
-
-                        } else {
-                            echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
-                            echo "<p><strong>Error:</strong> Invalid response format.</p>";
-                            echo "</div>";
+            <div class="flex flex-col h-auto min-h-[300px] max-h-[500px] w-3/5 mx-auto rounded-lg overflow-hidden bg-white">
+                <div class="bg-gray-50 py-2 border-b border-gray-200">
+                    <h3 class="text-center font-semibold">Tickify AI</h3>
+                </div>
+                <!-- chat History -->
+                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-4">
+                    <!-- messages will appear here -->
+                    <?php
+                    if (isset($_SESSION['temp_index_history']) && count($_SESSION['temp_index_history']) > 1) {
+                        for ($i = 1; $i < count($_SESSION['temp_index_history']); $i++) {
+                            $message = $_SESSION['temp_index_history'][$i];
+                            if ($message['role'] === 'user') {
+                                echo '<div class="flex justify-end mb-3">';
+                                echo '<div class="bg-blue-500 text-white rounded-lg py-2 px-4 max-w-[70%] break-words">';
+                                echo htmlspecialchars($message['content']);
+                                echo '</div>';
+                                echo '</div>';
+                            } else if ($message['role'] === 'assistant') {
+                                echo '<div class="flex justify-start mb-3">';
+                                echo '<div class="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 max-w-[70%] break-words">';
+                                echo nl2br(htmlspecialchars($message['content']));
+                                echo '</div>';
+                                echo '</div>';
+                            }
                         }
-                    } else {
-                        echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
-                        echo "<p><strong>Error:</strong> HTTP Status $statusCode - " . htmlspecialchars($response) . "</p>";
-                        echo "</div>";
                     }
-                }
 
-                curl_close($ch);
-            } else {
-                echo "<div style='text-align: left; margin: 20px auto; padding: 10px; border-left: 4px solid #dc3545; background-color: #f8d7da;'>";
-                echo "<p><strong>Error:</strong> Please enter a question.</p>";
-                echo "</div>";
-            }
-        }
-        ?>
+                    // display any API errors
+                    if (isset($_SESSION['api_error'])) {
+                        echo '<div class="flex justify-start mb-3">';
+                        echo '<div class="bg-red-100 text-red-800 rounded-lg py-2 px-4 max-w-[70%]">';
+                        echo '<strong>Error:</strong> ' . htmlspecialchars($_SESSION['api_error']);
+                        echo '</div>';
+                        echo '</div>';
 
-        <?php if ($this->tickets): ?>
-            <table class="ticket-table display" style="width: 100%; margin: 20px 0;">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Description</th>
-                    <th>Priority</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($this->tickets as $ticket): ?>
-                    <tr>
-                        <td><?= $ticket->id; ?></td>
-                        <td data-search="<?= htmlentities($ticket->subject); ?>"><?= htmlentities($ticket->subject); ?></td>
-                        <td data-search="<?= htmlentities($ticket->description); ?>"><?= htmlentities($ticket->description); ?></td>
-                        <td data-search="<?= ucfirst($ticket->priority); ?>"><?= ucfirst($ticket->priority); ?></td>
-                        <td data-search="<?= htmlentities($ticket->category); ?>"><?= htmlentities($ticket->category); ?></td>
-                        <td data-search="<?= ucfirst($ticket->status); ?>"><?= ucfirst($ticket->status); ?></td>
-                        <td data-search="<?= $ticket->created_at; ?>"><?= $ticket->created_at; ?></td>
-                        <td>
-                            <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>">Edit</a> |
-                            <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>" onclick="return confirm('Are you sure you want to delete this ticket?');">Delete</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <div>No tickets found. Create some!</div>
-        <?php endif; ?>
+                        // clear the error after displaying it
+                        unset($_SESSION['api_error']);
+                    }
+                    ?>
 
+                    <?php if (isset($_SESSION['temp_index_history']) && count($_SESSION['temp_index_history']) > 1 && end($_SESSION['temp_index_history'])['role'] === 'assistant'): ?>
+                        <div class="mt-4 border-t pt-4">
+                            <h3 class="text-center font-bold mb-3">Was your question solved?</h3>
+                            <div class="flex justify-center gap-4 flex-wrap">
+                                <form action="<?= Config::get('URL') ?>createTicket/index" method="get">
+                                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                        No, Create New Ticket
+                                    </button>
+                                </form>
+                                <form action="<?= Config::get('URL') ?>index/index" method="post">
+                                    <input type="hidden" name="reset_session" value="1">
+                                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                                        Yes, my question was solved
+                                    </button>
+                                </form>
+                                <form action="<?= Config::get('URL') ?>index/index" method="post">
+                                    <input type="hidden" name="continue_in_chat" value="1">
+                                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                        Continue in AI Chat
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- chat input -->
+                <div class="p-4 bg-gray-50 border-t border-gray-200">
+                    <form method="post" class="flex gap-2" id="chat-form">
+                        <textarea id="prompt" name="prompt" rows="1" placeholder="Type your message here..." required class="flex-1 rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-hidden"></textarea>
+                        <button type="submit" class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <?php if ($this->tickets): ?>
+                <div class="rounded-xl shadow-sm w-4/5 mx-auto mt-8 overflow-hidden">
+                    <table id="ticketsTable" class="w-full bg-white table-fixed">
+                        <thead>
+                        <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Subject</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Priority</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Category</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Created At</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($this->tickets as $ticket): ?>
+                            <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out" data-id="<?= $ticket->id; ?>">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $ticket->id; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->subject); ?></td>
+                                <td class="px-6 py-4 truncate max-w-[200px] text-sm text-gray-500"><?= htmlentities($ticket->description); ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        <?php
+                                        if ($ticket->priority === 'high') {
+                                            echo 'bg-red-100 text-red-800';
+                                        } elseif ($ticket->priority === 'medium') {
+                                            echo 'bg-yellow-100 text-yellow-800';
+                                        } else {
+                                            echo 'bg-green-100 text-green-800';
+                                        }
+                                        ?>">
+                                            <?= ucfirst($ticket->priority); ?>
+                                        </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->category); ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        <?php
+                                        if ($ticket->status === 'new') {
+                                            echo 'bg-blue-100 text-blue-800';
+                                        } elseif ($ticket->status === 'open') {
+                                            echo 'bg-purple-100 text-purple-800';
+                                        } elseif ($ticket->status === 'on_hold') {
+                                            echo 'bg-orange-100 text-orange-800';
+                                        } elseif ($ticket->status === 'solved') {
+                                            echo 'bg-green-100 text-green-800';
+                                        } else {
+                                            echo 'bg-gray-100 text-gray-800';
+                                        }
+                                        ?>">
+                                            <?= ucfirst(str_replace('_', ' ', $ticket->status)); ?>
+                                        </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= $ticket->created_at; ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
+                                           class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                            <svg class="h-3.5 w-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Edit
+                                        </a>
+                                        <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
+                                           onclick="return confirm('Are you sure you want to delete this ticket?');"
+                                           class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
+                                            <svg class="h-3.5 w-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-8 bg-gray-50 rounded-lg border border-gray-200 mt-8">
+                    <p class="text-gray-500 text-lg">No tickets found. Create some!</p>
+                </div>
+            <?php endif; ?>
+
+        </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.0/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.0/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.0/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.0/css/jquery.dataTables.min.css" />
 
-<script>
-    $(document).ready(function () {
-        $('.ticket-table').DataTable({
-            responsive: true,
-            paging: false,
-            searching: false,
-            order: [[0, 'asc']],
+    <script>
+        $(document).ready(function () {
+            // init tickets table with basic config
+            $('#ticketsTable').DataTable({
+                responsive: true,
+                order: [[0, 'asc']],
+                columnDefs: [
+                    { width: '5%', targets: 0 },
+                    { width: '15%', targets: 1 },
+                    { width: '25%', targets: 2 },
+                    { width: '8%', targets: 3 },
+                    { width: '10%', targets: 4 },
+                    { width: '8%', targets: 5 },
+                    { width: '12%', targets: 6 },
+                    { width: '17%', targets: 7 }
+                ],
+                "drawCallback": function() {
+                    attachClickHandlers();
+
+                    // style buttons on redraw
+                    $('.paginate_button').addClass('px-3 py-1.5 mx-1 rounded-full text-blue-600 hover:bg-blue-50 focus:ring-2 focus:ring-blue-300');
+                    $('.paginate_button.current').addClass('bg-blue-500 text-white hover:bg-blue-600');
+                    $('.paginate_button.disabled').addClass('text-gray-400 cursor-not-allowed');
+                },
+                language: {
+                    lengthMenu: "_MENU_ per page",
+                    info: "_START_-_END_ of _TOTAL_ tickets",
+                    infoEmpty: "No tickets found"
+                },
+                dom: '<"flex flex-wrap gap-4 items-center justify-between py-4"<"flex items-center"l>>rt<"flex flex-wrap gap-4 items-center justify-between py-4"<"flex items-center"i><"flex items-center"p>>'
+            });
+
+            // click handlers for table rows
+            function attachClickHandlers() {
+                $('.ticket-row').off('click').on('click', function () {
+                    window.location.href = '<?= Config::get("URL"); ?>ticketHandler/index/' + $(this).data('id');
+                });
+                $('.ticket-row a').off('click').on('click', function (e) { e.stopPropagation(); });
+            }
+            attachClickHandlers();
+
+            // chat auto-scroll
+            const chatHistory = document.getElementById('chat-history');
+            if (chatHistory) chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            // message input handlers
+            const textarea = document.getElementById('prompt');
+            if (textarea) {
+                // submit on enter
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.form.submit(); }
+                });
+
+                // auto-resize
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+                });
+            }
+
+            // style table elements
+            $('.dataTables_length select').addClass('rounded-lg border border-gray-300 px-3 py-1.5 focus:ring-2 focus:ring-blue-500');
+            $('.dataTables_filter input').addClass('rounded-full border border-gray-300 px-5 py-2 pl-10 focus:ring-2 focus:ring-blue-500 shadow-sm');
+            $('.dataTables_paginate').addClass('flex items-center justify-center mt-4');
+            $('.dataTables_info').addClass('text-gray-600 text-sm');
+            $('table.dataTable').addClass('border-none').css('width', '100%');
+            $('.dataTable thead th').addClass('border-b-2 border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100');
+            $('table.dataTable tbody td').addClass('py-3');
+
+            // prevent horizontal scroll
+            $('.dataTables_wrapper').addClass('w-full').css('max-width', '100%');
+            $('.dataTables_scrollBody').css('overflow-x', 'hidden');
+
+            // No search bar needed
         });
-    });
-
-    const textarea = document.getElementById('prompt');
-    const form = textarea.closest('form');
-
-    textarea.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            form.submit();
-        }
-    });
-</script>
+    </script>
+<?php
+// Flush the output buffer and send all output to the browser
+ob_end_flush();
+?>

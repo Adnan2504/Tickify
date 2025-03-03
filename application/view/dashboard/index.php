@@ -1,6 +1,7 @@
-<div class="container mx-auto px-4 py-6">
+
+<div class="px-4 py-6 w-full">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="bg-white rounded-lg shadow-md p-6 w-full">
 
         <!-- System Feedback Messages -->
         <?php $this->renderFeedbackMessages(); ?>
@@ -32,12 +33,20 @@
             </div>
         </div>
 
-        <!-- You could add additional dashboard sections here -->
-        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Recent Activity</h2>
-            <p class="text-gray-600">
-                This is where you could display recent ticket activity or other important information.
-            </p>
+        <!-- Additional dashboard sections with full width -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Recent Activity</h2>
+                <p class="text-gray-600">
+                    This is where you could display recent ticket activity or other important information.
+                </p>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">System Status</h2>
+                <p class="text-gray-600">
+                    Current system status and performance metrics could be displayed here.
+                </p>
+            </div>
         </div>
     </div>
 </div>
