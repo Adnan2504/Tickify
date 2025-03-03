@@ -47,23 +47,6 @@
           </button>
         </form>
       </div>
-
-      <!-- Divider -->
-      <div class="flex items-center justify-center mb-6">
-        <span class="border-b border-gray-300 w-1/3"></span>
-        <span class="px-2 text-gray-500">or</span>
-        <span class="border-b border-gray-300 w-1/3"></span>
-      </div>
-
-      <!-- Registration Section -->
-      <div class="text-center">
-        <h2 class="text-2xl font-bold mb-2">No account yet?</h2>
-        <p class="mb-4 text-gray-600">Create an account to get started</p>
-        <a href="<?php echo Config::get('URL'); ?>register/index" 
-           class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-all duration-200 inline-block hover:scale-105">
-          Register
-        </a>
-      </div>
     </div>
   </div>
 </body>

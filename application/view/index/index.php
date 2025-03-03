@@ -182,6 +182,7 @@ ob_start();
             // init tickets table with basic config
             $('#ticketsTable').DataTable({
                 responsive: true,
+                paging: false,
                 order: [[0, 'asc']],
                 columnDefs: [
                     { width: '5%', targets: 0 },
