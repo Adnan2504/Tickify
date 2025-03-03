@@ -1,6 +1,119 @@
 <?php
 // start output buffering at the very beginning of the file
-ob_start();
+// ob_start();
+// only start session if one doesn't already exist
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Track the current page to detect navigation
+$current_page = 'index';
+
+// Debug information
+$_SESSION['debug_last_page'] = isset($_SESSION['last_page']) ? $_SESSION['last_page'] : 'None';
+$_SESSION['debug_current_page'] = $current_page;
+$_SESSION['debug_request_method'] = $_SERVER['REQUEST_METHOD'];
+
+
+// Force reset of chat history when arriving at index page
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (!isset($_SESSION['last_page']) || $_SESSION['last_page'] !== $current_page) {
+        // Coming from a different page or first visit, reset the chat history
+        $_SESSION['temp_index_history'] = [
+            ["role" => "system", "content" => "You are a helpful assistant."]
+        ];
+    }
+}
+
+// Always ensure history exists
+if (!isset($_SESSION['temp_index_history'])) {
+    $_SESSION['temp_index_history'] = [
+        ["role" => "system", "content" => "You are a helpful assistant."]
+    ];
+}
+
+// Store current page for next request
+$_SESSION['last_page'] = $current_page;
+
+// process form data before any HTML output
+if (isset($_POST['reset_session'])) {
+    $_SESSION['temp_index_history'] = [
+        ["role" => "system", "content" => "You are a helpful assistant."]
+    ];
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
+// Transfer chat to aiChat page
+if (isset($_POST['continue_in_chat'])) {
+    $_SESSION['history'] = $_SESSION['temp_index_history'];
+    header("Location: " . Config::get('URL') . "aiChat/index");
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $prompt = trim($_POST['prompt'] ?? '');
+
+    if (!empty($prompt)) {
+        $_SESSION['temp_index_history'][] = ["role" => "user", "content" => $prompt];
+
+        $url = "http://localhost:11434/api/chat";
+        $headers = ["Content-Type: application/json"];
+
+        $data = [
+            "model" => "llama3.1:latest",
+            "messages" => $_SESSION['temp_index_history'],
+            "stream" => false
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $response = curl_exec($ch);
+        $error = false;
+
+        if (curl_errno($ch)) {
+            $error = true;
+            $_SESSION['api_error'] = curl_error($ch);
+        } else {
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if ($statusCode === 200) {
+                $responseData = json_decode($response, true);
+
+                if (isset($responseData['message']['content'])) {
+                    $_SESSION['temp_index_history'][] = ["role" => "assistant", "content" => $responseData['message']['content']];
+
+                    // Redirect to refresh the page and show new messages
+                    header("Location: " . $_SERVER['REQUEST_URI']);
+                    exit();
+                } else {
+                    $error = true;
+                    $_SESSION['api_error'] = 'Invalid response format.';
+                }
+            } else {
+                $error = true;
+                $_SESSION['api_error'] = 'HTTP Status ' . $statusCode . ' - ' . $response;
+            }
+        }
+
+        curl_close($ch);
+
+        if ($error) {
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        }
+    } else {
+        $_SESSION['api_error'] = 'Please enter a question.';
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+}
 ?>
     <div class="w-full px-4">
         <h1 class="text-center text-3xl font-bold mt-6 mb-4">Tickify</h1>
@@ -8,12 +121,16 @@ ob_start();
             <!-- echo out the system feedback (error and success messages) -->
             <?php $this->renderFeedbackMessages(); ?>
 
-            <div class="flex flex-col h-auto min-h-[300px] max-h-[500px] w-3/5 mx-auto rounded-lg overflow-hidden bg-white">
-                <div class="bg-gray-50 py-2 border-b border-gray-200">
-                    <h3 class="text-center font-semibold">Tickify AI</h3>
-                </div>
+            <h2 class="text-2xl font-bold text-blue-600 mb-3 inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                Tickify AI
+            </h2>
+
+            <div class="flex flex-col h-auto min-h-[300px] max-h-[500px] w-3/5 mx-auto rounded-2xl overflow-hidden bg-white shadow-sm">
                 <!-- chat History -->
-                <div id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-4">
+                <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-4">
                     <!-- messages will appear here -->
                     <?php
                     if (isset($_SESSION['temp_index_history']) && count($_SESSION['temp_index_history']) > 1) {
@@ -86,7 +203,7 @@ ob_start();
             </div>
 
             <?php if ($this->tickets): ?>
-                <div class="rounded-xl shadow-sm w-4/5 mx-auto mt-8 overflow-hidden">
+                <div class="rounded-xl shadow-sm w-3/5 mx-auto mt-8 overflow-hidden">
                     <table id="ticketsTable" class="w-full bg-white table-fixed">
                         <thead>
                         <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -251,10 +368,9 @@ ob_start();
             $('.dataTables_wrapper').addClass('w-full').css('max-width', '100%');
             $('.dataTables_scrollBody').css('overflow-x', 'hidden');
 
-            // No search bar needed
         });
     </script>
 <?php
 // Flush the output buffer and send all output to the browser
-ob_end_flush();
+// ob_end_flush();
 ?>
