@@ -1,139 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard - Tickify</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex min-h-screen bg-gray-100">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow flex flex-col">
-    <!-- User Info -->
-    <div class="p-6">
-      <div class="flex items-center space-x-4">
-        <!-- Replace this placeholder with your user’s avatar image -->
-        <img
-          src="https://via.placeholder.com/40"
-          alt="User Avatar"
-          class="w-12 h-12 rounded-full"
-        />
-        <div>
-          <div class="font-bold text-lg">User Name</div>
-          <div class="text-sm text-gray-500">Account</div>
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
+    <div class="bg-white rounded-lg shadow-md p-6">
+
+        <!-- System Feedback Messages -->
+        <?php $this->renderFeedbackMessages(); ?>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-blue-50 rounded-lg p-6 shadow-sm border border-blue-100 transition-all hover:shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Open Tickets</h2>
+                <p class="text-3xl font-bold text-blue-600">
+                    <?= isset($this->ticketStats['open_tickets']) ? htmlspecialchars($this->ticketStats['open_tickets']) : '0' ?>
+                </p>
+            </div>
+            <div class="bg-yellow-50 rounded-lg p-6 shadow-sm border border-yellow-100 transition-all hover:shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">In Progress</h2>
+                <p class="text-3xl font-bold text-yellow-600">
+                    <?= isset($this->ticketStats['in_progress_tickets']) ? htmlspecialchars($this->ticketStats['in_progress_tickets']) : '0' ?>
+                </p>
+            </div>
+            <div class="bg-green-50 rounded-lg p-6 shadow-sm border border-green-100 transition-all hover:shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Solved Tickets</h2>
+                <p class="text-3xl font-bold text-green-600">
+                    <?= isset($this->ticketStats['solved_tickets']) ? htmlspecialchars($this->ticketStats['solved_tickets']) : '0' ?>
+                </p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-6 shadow-sm border border-purple-100 transition-all hover:shadow-md">
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Messages Sent</h2>
+                <p class="text-3xl font-bold text-purple-600">
+                    <?= isset($this->messageStats['total_messages']) ? htmlspecialchars($this->messageStats['total_messages']) : '0' ?>
+                </p>
+            </div>
         </div>
-      </div>
+
+        <!-- You could add additional dashboard sections here -->
+        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Recent Activity</h2>
+            <p class="text-gray-600">
+                This is where you could display recent ticket activity or other important information.
+            </p>
+        </div>
     </div>
-
-    <!-- Navigation Menu -->
-    <nav class="flex-1 px-4 py-2 overflow-y-auto text-sm text-gray-700">
-      <!-- Top-Level Links -->
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        <!-- Icon (optional) -->
-        <!-- <svg class="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-          <path d="..." />
-        </svg> -->
-        Dashboard
-      </a>
-
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Create Ticket
-      </a>
-
-      <!-- Queues Section -->
-      <div class="mt-4 mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
-        Queues
-      </div>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        All Tickets
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        My Tickets
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Pending Tickets
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Unresponded
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Due Today
-      </a>
-
-      <!-- Status Section -->
-      <div class="mt-6 mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
-        Status
-      </div>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        New
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Open
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        On Hold
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Solved
-      </a>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Closed
-      </a>
-
-      <!-- Categories Section -->
-      <div class="mt-6 mb-1 text-xs font-semibold tracking-wide text-gray-400 uppercase">
-        Categories
-      </div>
-      <a
-        href="#"
-        class="flex items-center p-2 mt-2 rounded hover:bg-gray-200"
-      >
-        Billing & Returns
-      </a>
-      <!-- Add more categories or sections as needed -->
-    </nav>
-  </aside>
-
-  <!-- Main Content Area -->
-  <main class="flex-1 p-8">
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-    <!-- Your main dashboard content goes here -->
-    <p class="text-gray-700">Welcome to your dashboard!</p>
-  </main>
-</body>
-</html>
+</div>
