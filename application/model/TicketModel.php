@@ -14,7 +14,7 @@ class TicketModel
     {
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        //Admin und User sehen alle Tickets
+        //Admin und Mod sehen alle Tickets
         if (Session::get("user_account_type") >= 5){
             $sql = "SELECT id, subject, description, priority, category,status , created_at FROM support_tickets";
             $query = $database->prepare($sql);
@@ -26,9 +26,6 @@ class TicketModel
             $query = $database->prepare($sql);
             $query->execute(array(':user_id' => Session::get('user_id')));
         }
-
-
-
 
         return $query->fetchAll();
     }
@@ -102,14 +99,8 @@ class TicketModel
 
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $sql = "UPDATE support_tickets 
-        SET subject = :subject, 
-            description = :description, 
-            priority = :priority, 
-            category = :category,
-            status = :status 
-        WHERE id = :ticket_id
-        LIMIT 1";
+        $sql = "UPDATE support_tickets SET subject = :subject,  description = :description,  priority = :priority,  category = :category, status = :status
+                       WHERE id = :ticket_id LIMIT 1";
 
         $query = $database->prepare($sql);
         $query->execute([
@@ -137,12 +128,9 @@ class TicketModel
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
-
         $sql = "DELETE FROM support_tickets WHERE id = :ticket_id AND created_by = :user_id LIMIT 1";
         $query = $database->prepare($sql);
-
         $query->execute(array(':ticket_id' => $ticket_id, ':user_id' => Session::get('user_id')));
-
         if ($query->rowCount() === 1) {
             return true;
         }
