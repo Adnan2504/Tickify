@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
     <div class="w-full px-4">
-        <h1 class="text-center text-3xl font-bold mt-6 mb-4">Tickify</h1>
         <div class="w-full mx-auto text-center">
             <!-- echo out the system feedback (error and success messages) -->
             <?php $this->renderFeedbackMessages(); ?>

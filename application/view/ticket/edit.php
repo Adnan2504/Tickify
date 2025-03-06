@@ -10,21 +10,18 @@
             <form method="post" action="<?php echo Config::get('URL'); ?>ticket/editSave">
                 <!-- Ticket ID -->
                 <input type="hidden" name="ticket_id" value="<?php echo htmlentities($this->ticket->id); ?>" />
-
                 <!-- Subject field -->
                 <div class="mb-4">
                     <label for="subject" class="block text-gray-700 font-medium mb-2">Change Subject:</label>
                     <input type="text" id="subject" name="subject" value="<?php echo htmlentities($this->ticket->subject); ?>" required 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
-
                 <!-- Description field -->
                 <div class="mb-4">
                     <label for="description" class="block text-gray-700 font-medium mb-2">Change Description:</label>
                     <textarea id="description" name="description" rows="4" required
                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><?php echo htmlentities($this->ticket->description); ?></textarea>
                 </div>
-
                 <!-- Status Dropdown -->
                 <div class="mb-4">
                     <label for="status" class="block text-gray-700 font-medium mb-2">Change Status:</label>
