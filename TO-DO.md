@@ -41,12 +41,6 @@
 
 ### Chat
     - Display user Avatar in chat next to the image
-    - 
-
-### AI
-    - Test Image recognition
-    - Test speed of AI, use other model, deepeek or something(curr. Ollama 3.1)
-
 
 ## Laurentiu Iordachi
 - DESIGN
