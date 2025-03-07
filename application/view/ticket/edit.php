@@ -28,7 +28,7 @@
                     <select id="status" name="status" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <?php
-                        $statuses = ['new', 'open', 'on_hold', 'solved', 'closed'];
+                        $statuses = ['open', 'waiting', 'resolver'];
                         foreach ($statuses as $status) {
                             $selected = ($this->ticket->status == $status) ? 'selected' : '';
                             echo "<option value=\"$status\" $selected>" . ucfirst(str_replace('_', ' ', $status)) . "</option>";
@@ -51,8 +51,7 @@
                 <!-- Category field -->
                 <div class="mb-6">
                     <label for="category" class="block text-gray-700 font-medium mb-2">Change Category:</label>
-                    <input type="text" id="subject" name="subject" value="<?php echo htmlentities($this->ticket->category); ?>" required
-                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="category" id="category" name="category" value="<?php echo htmlentities($this->ticket->category); ?>" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
                 <!-- Submit button -->
