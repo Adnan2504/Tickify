@@ -38,15 +38,10 @@
     ---- User should have option to se only his own tickets that he created ---
     - #Settings -> Plan -> One or more pages? 
     - #Avatar -> What should user be able to do with it? should we display it in chat? display it on top of the page or what??
+    - Del reset PW at Login??
 
 ### Chat
     - Display user Avatar in chat next to the image
-    - 
-
-### AI
-    - Test Image recognition
-    - Test speed of AI, use other model, deepeek or something(curr. Ollama 3.1)
-
 
 ## Laurentiu Iordachi
 - DESIGN

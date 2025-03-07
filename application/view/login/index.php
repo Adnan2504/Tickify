@@ -33,10 +33,10 @@
               <input type="checkbox" name="set_remember_me_cookie" class="form-checkbox h-4 w-4 text-blue-500">
               <span class="ml-2 text-gray-700">Remember me for 2 weeks</span>
             </label>
-            <a href="<?php echo Config::get('URL'); ?>login/requestPasswordReset" 
+           <!-- <a href="<?php /*echo Config::get('URL'); */?>login/requestPasswordReset"
                class="text-blue-500 hover:underline transition-transform hover:scale-105">
               I forgot my password
-            </a>
+            </a>-->
           </div>
           <?php if (!empty($this->redirect)) { ?>
             <input type="hidden" name="redirect" value="<?php echo $this->encodeHTML($this->redirect); ?>">
