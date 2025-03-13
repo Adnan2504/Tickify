@@ -34,13 +34,5 @@
                 </button>
             </form>
         </div>
-
-        <!-- Login Redirect -->
-        <div class="text-center">
-            <p class="text-gray-600">Already have an account?</p>
-            <a href="<?php echo Config::get('URL'); ?>login/index" class="text-blue-500 hover:underline transition-transform hover:scale-105">
-                Login here
-            </a>
-        </div>
     </div>
 </div>
