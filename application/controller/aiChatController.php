@@ -49,7 +49,6 @@ class aiChatController extends Controller
                 return ['error' => "Question cannot be empty."];
             }
         }
-
         return [];
     }
 }

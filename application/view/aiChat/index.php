@@ -1,61 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!isset($_SESSION['history'])) {
-        $_SESSION['history'] = [
-            ["role" => "system", "content" => "You are a helpful assistant."]
-        ];
-    }
-
-    $prompt = trim($_POST['prompt']);
-
-    if (!empty($prompt)) {
-        $_SESSION['history'][] = ["role" => "user", "content" => $prompt];
-
-        // /api/generate geht auch aber da gibt es keine history :/
-        $url = "http://localhost:11434/api/chat";
-        $headers = ["Content-Type: application/json"];
-
-        $data = [
-            "model" => "llama3.1:latest",
-            "messages" => $_SESSION['history'],
-            "stream" => false
-        ];
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            $_SESSION['feedback_negative'][] = "Error: " . curl_error($ch);
-        } else {
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-            if ($statusCode === 200) {
-                $responseData = json_decode($response, true);
-
-                if (isset($responseData['message']['content'])) {
-                    $_SESSION['history'][] = ["role" => "assistant", "content" => $responseData['message']['content']];
-
-                    // Redirect to refresh the page
-                    header("Location: " . $_SERVER['REQUEST_URI']);
-                    exit();
-                } else {
-                    $_SESSION['feedback_negative'][] = "Error: Invalid response format.";
-                }
-            } else {
-                $_SESSION['feedback_negative'][] = "Error: HTTP Status $statusCode - " . $response;
-            }
-        }
-
-        curl_close($ch);
-    } else {
-        $_SESSION['feedback_negative'][] = "Error: Please enter a question.";
-    }
+   AIChatModel::handleRequest(false);
 }
 ?>
 

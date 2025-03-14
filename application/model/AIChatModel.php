@@ -1,41 +1,58 @@
 <?php
 class AIChatModel {
-    public static function sendPrompt($prompt, &$history) {
-        if (empty($prompt)) {
-            return ["error" => "Prompt cannot be empty."];
+    private static $apiUrl = "http://localhost:11434/api/chat";
+
+    public static function handleRequest($useTempHistory = false) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
         }
 
-        $history[] = ["role" => "user", "content" => $prompt];
+        $sessionKey = $useTempHistory ? 'temp_index_history' : 'history';
 
-        $url = "http://localhost:11434/api/chat";
+        if (!isset($_SESSION[$sessionKey])) {
+            $_SESSION[$sessionKey] = [["role" => "system", "content" => "You are a helpful assistant."]];
+        }
+
+        $prompt = trim($_POST['prompt'] ?? '');
+
+        if (empty($prompt)) {
+            $_SESSION['feedback_negative'][] = "Error: Please enter a question.";
+            return;
+        }
+
+        $_SESSION[$sessionKey][] = ["role" => "user", "content" => $prompt];
+
         $headers = ["Content-Type: application/json"];
         $data = [
             "model" => "llama3.1:latest",
-            "messages" => $history,
+            "messages" => $_SESSION[$sessionKey],
             "stream" => false
         ];
 
+        // Initialize cURL session for API request
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_URL, self::$apiUrl); // Set API URL
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as a string
+        curl_setopt($ch, CURLOPT_POST, true); // Set HTTP method to POST
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Attach headers
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); // Send data as JSON
 
+        // Execute API request
         $response = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $error = curl_errno($ch) ? curl_error($ch) : null; // Capture any errors
+        curl_close($ch); // Close cURL session
 
-        if ($statusCode === 200) {
-            $responseData = json_decode($response, true);
-            if (isset($responseData['message']['content'])) {
-                $history[] = ["role" => "assistant", "content" => $responseData['message']['content']];
-                return ["response" => $responseData['message']['content']];
-            } else {
-                return ["error" => "Invalid response format."];
-            }
+        if ($error) {
+            $_SESSION['feedback_negative'][] = "Error: " . $error;
+            return;
+        }
+
+        // Process response
+        $responseData = json_decode($response, true);
+        if (isset($responseData['message']['content'])) {
+            $_SESSION[$sessionKey][] = ["role" => "assistant", "content" => $responseData['message']['content']];
         } else {
-            return ["error" => "HTTP Status $statusCode - $response"];
+            $_SESSION['feedback_negative'][] = "Error: Invalid response format.";
         }
     }
 }

@@ -98,7 +98,6 @@ class TicketModel
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
-
         $sql = "UPDATE support_tickets SET subject = :subject,  description = :description,  priority = :priority,  category = :category, status = :status
                        WHERE id = :ticket_id LIMIT 1";
 

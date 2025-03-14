@@ -1,19 +1,5 @@
 <?php
-// start output buffering at the very beginning of the file
-// ob_start();
-// only start session if one doesn't already exist
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Track the current page to detect navigation
 $current_page = 'index';
-
-// Debug information
-$_SESSION['debug_last_page'] = isset($_SESSION['last_page']) ? $_SESSION['last_page'] : 'None';
-$_SESSION['debug_current_page'] = $current_page;
-$_SESSION['debug_request_method'] = $_SERVER['REQUEST_METHOD'];
-
 
 // Force reset of chat history when arriving at index page
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -52,67 +38,7 @@ if (isset($_POST['continue_in_chat'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $prompt = trim($_POST['prompt'] ?? '');
-
-    if (!empty($prompt)) {
-        $_SESSION['temp_index_history'][] = ["role" => "user", "content" => $prompt];
-
-        $url = "http://localhost:11434/api/chat";
-        $headers = ["Content-Type: application/json"];
-
-        $data = [
-            "model" => "llama3.1:latest",
-            "messages" => $_SESSION['temp_index_history'],
-            "stream" => false
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-        $response = curl_exec($ch);
-        $error = false;
-
-        if (curl_errno($ch)) {
-            $error = true;
-            $_SESSION['api_error'] = curl_error($ch);
-        } else {
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-            if ($statusCode === 200) {
-                $responseData = json_decode($response, true);
-
-                if (isset($responseData['message']['content'])) {
-                    $_SESSION['temp_index_history'][] = ["role" => "assistant", "content" => $responseData['message']['content']];
-
-                    // Redirect to refresh the page and show new messages
-                    header("Location: " . $_SERVER['REQUEST_URI']);
-                    exit();
-                } else {
-                    $error = true;
-                    $_SESSION['api_error'] = 'Invalid response format.';
-                }
-            } else {
-                $error = true;
-                $_SESSION['api_error'] = 'HTTP Status ' . $statusCode . ' - ' . $response;
-            }
-        }
-
-        curl_close($ch);
-
-        if ($error) {
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
-        }
-    } else {
-        $_SESSION['api_error'] = 'Please enter a question.';
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-    }
+   AIChatModel::handleRequest(true);
 }
 ?>
     <div class="w-full px-4">

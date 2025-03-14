@@ -9,7 +9,6 @@ class IndexController extends Controller
     {
         parent::__construct();
         Auth::checkAuthentication();
-
     }
 
     /**

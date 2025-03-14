@@ -105,19 +105,16 @@
                         <div class="p-4 bg-white border-t border-gray-200">
                             <form id="message-form" action="<?= config::get("URL"); ?>ticketHandler/respondToTicket" method="post" enctype="multipart/form-data" class="space-y-4">
                                 <input type="hidden" name="ticket_id" value="<?= htmlentities($this->ticket->id); ?>">
-
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Your Message:</label>
                                     <textarea name="message" rows="3" required
                                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                                 </div>
-
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Attachment (optional):</label>
                                     <input type="file" name="attachment" accept="image/*"
                                            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                                 </div>
-
                                 <button type="submit" class="inline-flex justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
                                     Send Message
                                 </button>

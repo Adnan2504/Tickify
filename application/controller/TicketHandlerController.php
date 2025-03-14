@@ -11,14 +11,12 @@ class TicketHandlerController extends Controller
     public function __construct()
     {
         parent::__construct();
-
         Auth::checkAuthentication();
     }
 
     /**
      * This method controls what happens when you move to /ticket/index in your app.
      */
-
     public function index($ticket_id)
     {
         $ticket = TicketHandlerModel::getTicketById($ticket_id);
@@ -59,14 +57,14 @@ class TicketHandlerController extends Controller
             if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] === UPLOAD_ERR_OK) {
                 $upload_dir = Config::get('PATH_IMAGES') . Session::get('user_id') . '/';
                 if (!is_dir($upload_dir)) {
-                    mkdir($upload_dir, 0755, true);  // Create directory if it doesn't exist
+                    mkdir($upload_dir, 0755, true);
                 }
 
                 $filename = uniqid() . '_' . basename($_FILES['attachment']['name']);
                 $target_file = $upload_dir . $filename;
 
                 if (move_uploaded_file($_FILES['attachment']['tmp_name'], $target_file)) {
-                    $attachment_path = 'images/' . Session::get('user_id') . '/' . $filename;  // Save the relative path
+                    $attachment_path = 'images/' . Session::get('user_id') . '/' . $filename;
                 } else {
                     Session::add('feedback_negative', 'Failed to upload the attachment.');
                 }
@@ -138,8 +136,4 @@ class TicketHandlerController extends Controller
 
         Redirect::to('ticket/index/');
     }
-
-
-
-
 }

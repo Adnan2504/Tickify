@@ -15,7 +15,6 @@ class RegisterController extends Controller
     {
         parent::__construct();
         Auth::checkAdminAuthentication();
-
     }
 
     /**
