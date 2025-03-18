@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Tickify AI
             </h2>
 
-            <div class="flex flex-col h-auto min-h-[300px] max-h-[500px] w-3/5 mx-auto rounded-2xl overflow-hidden bg-white shadow-sm">
+            <div class="flex flex-col h-auto min-h-[300px] max-h-[500px] w-full max-w-7xl mx-auto rounded-2xl overflow-hidden bg-white shadow-sm">
                 <!-- chat History -->
                 <div id="chat-history" class="flex-1 overflow-y-auto p-5 space-y-4">
                     <!-- messages will appear here -->
@@ -90,9 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <?php if ($this->tickets): ?>
-                <div class="w-[1000px] min-w-[1000px] mx-auto mt-8">
+                <div class="w-full max-w-7xl mx-auto mt-8">
                     <!-- Desktop view: table - only show on larger screens (lg and above) -->
-                    <div class="hidden lg:block rounded-xl shadow-sm overflow-visible">
+                    <div class="hidden lg:block rounded-xl shadow-sm w-full max-w-[1000px] mx-auto">
                         <table id="ticketsTable" class="w-full bg-white table-fixed">
                             <thead>
                             <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -149,15 +149,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-2">
                                             <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
-                                               class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                               class="inline-flex items-center px-2 py-1 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 w-[50px] justify-center">
                                                 <heroicon-pencil class="h-3.5 w-3.5 mr-1"/>
                                                 Edit
                                             </a>
                                             <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
                                                onclick="return confirm('Are you sure you want to delete this ticket?');"
-                                               class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
-                                                <heroicon-trash class="h-3.5 w-3.5 mr-1"/>
-                                                Delete
+                                               class="inline-flex items-center px-3 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 min-w-fit justify-center">
+                                                <heroicon-trash class="h-3.5 w-3.5 mr-0.5" />Delete
                                             </a>
                                         </div>
                                     </td>
@@ -168,10 +167,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <!-- Mobile view: card layout - show on all mobile and tablet devices (below lg) -->
-                    <div class="lg:hidden w-full overflow-x-hidden">
-                        <div class="grid grid-cols-1 gap-4 p-3 w-full">
+                    <div class="lg:hidden w-full max-w-full">
+                        <div class="grid grid-cols-1 gap-4 px-2 sm:px-4 py-3">
                             <?php foreach ($this->tickets as $ticket): ?>
-                                <div class="ticket-card bg-white rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition duration-200 w-full max-w-full" data-id="<?= $ticket->id; ?>">
+                                <div class="ticket-card bg-white rounded-lg shadow-sm p-3 sm:p-4 border border-gray-100 hover:shadow-md transition duration-200" data-id="<?= $ticket->id; ?>">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="text-sm font-semibold text-gray-700">ID: <?= $ticket->id; ?></span>
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap
@@ -227,9 +226,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </a>
                                         <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
                                            onclick="return confirm('Are you sure you want to delete this ticket?');"
-                                           class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 whitespace-nowrap">
-                                            <heroicon-trash class="h-3.5 w-3.5 mr-1" />
-                                            Delete
+                                           class="inline-flex items-center px-3 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 min-w-fit justify-center">
+                                            <heroicon-trash class="h-3.5 w-3.5" />
+                                            <span>Delete</span>
                                         </a>
                                     </div>
                                 </div>
@@ -256,6 +255,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .w-3/5 {
             width: 95% !important;
         }
+
+            /* Make chat history scrollable */
+            #chat-history {
+                max-height: 400px;
+            }
 
             /* Line clamp for description */
             .line-clamp-2 {
@@ -299,16 +303,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $('#ticketsTable').DataTable({
                 paging: false,
                 order: [[0, 'asc']],
-                autoWidth: true,
+                autoWidth: false,
+                responsive: true,
+                info: false,
+                scrollX: false,
                 columnDefs: [
-                    { width: '5%', targets: 0 },
-                    { width: '15%', targets: 1 },
-                    { width: '25%', targets: 2 },
-                    { width: '8%', targets: 3 },
-                    { width: '10%', targets: 4 },
-                    { width: '8%', targets: 5 },
-                    { width: '12%', targets: 6 },
-                    { width: '17%', targets: 7 }
+                    { width: '5%', targets: 0, responsivePriority: 1 },
+                    { width: '15%', targets: 1, responsivePriority: 2 },
+                    { width: '30%', targets: 2, responsivePriority: 3 },
+                    { width: '8%', targets: 3, responsivePriority: 4 },
+                    { width: '10%', targets: 4, responsivePriority: 6 },
+                    { width: '8%', targets: 5, responsivePriority: 5 },
+                    { width: '12%', targets: 6, responsivePriority: 7 },
+                    { width: '12%', targets: 7, responsivePriority: 1 }
                 ],
                 "drawCallback": function() {
                     attachClickHandlers();
