@@ -1,3 +1,26 @@
+
+/* Responsive text adjustments */
+@media (min-width: 1280px) and (max-width: 1536px) {
+    .xl\:block .flex.space-x-6 > li > a {
+        font-size: 0.9rem;
+    }
+}
+
+/* Ensure mobile menu stays hidden appropriately */
+body.desktop-view #mobile-menu {
+    display: none !important;
+}
+
+
+/* Additional styles to ensure responsive behavior */
+body.desktop-view .xl\:block {
+    display: block !important;
+}
+
+body.desktop-view .lg\:hidden {
+    display: none !important;
+}
+
 body {
     font-family: Arial, sans-serif;
     font-weight: 400;
@@ -265,4 +288,23 @@ body {
 /* error page */
 .red-text {
     color: red;
+}
+/* Fix for mobile menu overlay */
+body.desktop-view #mobile-menu {
+    display: none !important;
+}
+
+@media (max-width: 1023px) {
+    body.mobile-view .lg\:block {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    body.desktop-view .lg\:hidden {
+        display: none !important;
+    }
+    body.desktop-view .lg\:block {
+        display: block !important;
+    }
 }
