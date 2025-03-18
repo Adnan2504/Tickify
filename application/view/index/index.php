@@ -1,10 +1,22 @@
 <?php
+// start output buffering at the very beginning of the file
+// ob_start();   // output was sent to the browser before all session operations were completed which caused the error "headers already sent"
+// only start session if one doesn't already exist
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $current_page = 'index';
+
+// Debug information
+$_SESSION['debug_last_page'] = isset($_SESSION['last_page']) ? $_SESSION['last_page'] : 'None';
+$_SESSION['debug_current_page'] = $current_page;
+$_SESSION['debug_request_method'] = $_SERVER['REQUEST_METHOD'];
+
 
 // Force reset of chat history when arriving at index page
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     if (!isset($_SESSION['last_page']) || $_SESSION['last_page'] !== $current_page) {
-        // Coming from a different page or first visit, reset the chat history
         $_SESSION['temp_index_history'] = [
             ["role" => "system", "content" => "You are a helpful assistant."]
         ];
@@ -41,6 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     AIChatModel::handleRequest(true);
 }
 ?>
+    <!-- SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+        <symbol id="edit" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </symbol>
+        <symbol id="chat" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </symbol>
+        <symbol id="trash" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </symbol>
+    </svg>
     <div class="w-full px-4">
         <div class="w-full mx-auto text-center">
             <!-- echo out the system feedback (error and success messages) -->
@@ -185,16 +209,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= $ticket->created_at; ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex space-x-2">
+                                        <div class="flex justify-center space-x-2">
                                             <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
-                                               class="inline-flex items-center px-2 py-1 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 w-[50px] justify-center">
-                                                <heroicon-pencil class="h-3.5 w-3.5 mr-1"/>
+                                               class="inline-flex items-center justify-center w-20 px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                                 Edit
                                             </a>
                                             <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
                                                onclick="return confirm('Are you sure you want to delete this ticket?');"
-                                               class="inline-flex items-center px-3 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 min-w-fit justify-center">
-                                                <heroicon-trash class="h-3.5 w-3.5 mr-0.5" />Delete
+                                               class="inline-flex items-center justify-center w-20 px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
+                                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                Delete
                                             </a>
                                         </div>
                                     </td>
@@ -256,17 +281,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                     <div class="text-xs text-gray-500 mb-3">Created: <?= $ticket->created_at; ?></div>
 
-                                    <div class="flex space-x-2">
+                                    <div class="flex justify-center space-x-2">
                                         <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
-                                           class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 whitespace-nowrap">
-                                            <heroicon-pencil class="h-3.5 w-3.5 mr-1" />
+                                           class="inline-flex items-center justify-center w-20 px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             Edit
                                         </a>
                                         <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
                                            onclick="return confirm('Are you sure you want to delete this ticket?');"
-                                           class="inline-flex items-center px-3 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 min-w-fit justify-center">
-                                            <heroicon-trash class="h-3.5 w-3.5" />
-                                            <span>Delete</span>
+                                           class="inline-flex items-center justify-center w-20 px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
+                                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            Delete
                                         </a>
                                     </div>
                                 </div>
@@ -348,12 +373,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 columnDefs: [
                     { width: '5%', targets: 0, responsivePriority: 1 },
                     { width: '15%', targets: 1, responsivePriority: 2 },
-                    { width: '30%', targets: 2, responsivePriority: 3 },
+                    { width: '25%', targets: 2, responsivePriority: 3 },
                     { width: '8%', targets: 3, responsivePriority: 4 },
                     { width: '10%', targets: 4, responsivePriority: 6 },
                     { width: '8%', targets: 5, responsivePriority: 5 },
                     { width: '12%', targets: 6, responsivePriority: 7 },
-                    { width: '12%', targets: 7, responsivePriority: 1 }
+                    { width: '17%', targets: 7, responsivePriority: 1 }
                 ],
                 "drawCallback": function() {
                     attachClickHandlers();
@@ -428,3 +453,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $(window).resize(adjustForViewportSize);
         });
     </script>
+<?php
+// Flush the output buffer and send all output to the browser
+// ob_end_flush();
+?>
