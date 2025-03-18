@@ -1,6 +1,6 @@
 <?php
 // start output buffering at the very beginning of the file
-// ob_start();
+// ob_start();   // output was sent to the browser before all session operations were completed which caused the error "headers already sent"
 // only start session if one doesn't already exist
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -202,27 +202,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <?php if ($this->tickets): ?>
-                <div class="rounded-xl shadow-sm w-3/5 mx-auto mt-8 overflow-hidden">
-                    <table id="ticketsTable" class="w-full bg-white table-fixed">
-                        <thead>
-                        <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Subject</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Priority</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Category</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Created At</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach ($this->tickets as $ticket): ?>
-                            <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out" data-id="<?= $ticket->id; ?>">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $ticket->id; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->subject); ?></td>
-                                <td class="px-6 py-4 truncate max-w-[200px] text-sm text-gray-500"><?= htmlentities($ticket->description); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                <div class="w-[1000px] min-w-[1000px] mx-auto mt-8">
+                    <!-- Desktop view: table - only show on larger screens (lg and above) -->
+                    <div class="hidden lg:block rounded-xl shadow-sm overflow-visible">
+                        <table id="ticketsTable" class="w-full bg-white table-fixed">
+                            <thead>
+                            <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Subject</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Priority</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Category</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Created At</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            <?php foreach ($this->tickets as $ticket): ?>
+                                <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out" data-id="<?= $ticket->id; ?>">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $ticket->id; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->subject); ?></td>
+                                    <td class="px-6 py-4 truncate max-w-[200px] text-sm text-gray-500"><?= htmlentities($ticket->description); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                         <?php
                                         if ($ticket->priority === 'high') {
@@ -235,9 +237,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         ?>">
                                             <?= ucfirst($ticket->priority); ?>
                                         </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->category); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->category); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                         <?php
                                         if ($ticket->status === 'new') {
@@ -254,31 +256,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         ?>">
                                             <?= ucfirst(str_replace('_', ' ', $ticket->status)); ?>
                                         </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= $ticket->created_at; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= $ticket->created_at; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
+                                               class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                                <heroicon-pencil class="h-3.5 w-3.5 mr-1"/>
+                                                Edit
+                                            </a>
+                                            <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
+                                               onclick="return confirm('Are you sure you want to delete this ticket?');"
+                                               class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
+                                                <heroicon-trash class="h-3.5 w-3.5 mr-1"/>
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile view: card layout - show on all mobile and tablet devices (below lg) -->
+                    <div class="lg:hidden w-full overflow-x-hidden">
+                        <div class="grid grid-cols-1 gap-4 p-3 w-full">
+                            <?php foreach ($this->tickets as $ticket): ?>
+                                <div class="ticket-card bg-white rounded-lg shadow-sm p-4 border border-gray-100 hover:shadow-md transition duration-200 w-full max-w-full" data-id="<?= $ticket->id; ?>">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-sm font-semibold text-gray-700">ID: <?= $ticket->id; ?></span>
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap
+                                        <?php
+                                        if ($ticket->status === 'new') {
+                                            echo 'bg-blue-100 text-blue-800';
+                                        } elseif ($ticket->status === 'open') {
+                                            echo 'bg-purple-100 text-purple-800';
+                                        } elseif ($ticket->status === 'on_hold') {
+                                            echo 'bg-orange-100 text-orange-800';
+                                        } elseif ($ticket->status === 'solved') {
+                                            echo 'bg-green-100 text-green-800';
+                                        } else {
+                                            echo 'bg-gray-100 text-gray-800';
+                                        }
+                                        ?>">
+                                            <?= ucfirst(str_replace('_', ' ', $ticket->status)); ?>
+                                        </span>
+                                    </div>
+
+                                    <h3 class="font-medium text-gray-900 mb-1"><?= htmlentities($ticket->subject); ?></h3>
+                                    <p class="text-xs text-gray-600 mb-3 line-clamp-2"><?= htmlentities($ticket->description); ?></p>
+
+                                    <div class="grid grid-cols-2 gap-2 mb-3 text-xs">
+                                        <div>
+                                            <span class="text-gray-500">Priority:</span>
+                                            <span class="ml-1 px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full
+                                            <?php
+                                            if ($ticket->priority === 'high') {
+                                                echo 'bg-red-100 text-red-800';
+                                            } elseif ($ticket->priority === 'medium') {
+                                                echo 'bg-yellow-100 text-yellow-800';
+                                            } else {
+                                                echo 'bg-green-100 text-green-800';
+                                            }
+                                            ?>">
+                                                <?= ucfirst($ticket->priority); ?>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-500">Category:</span>
+                                            <span class="ml-1 text-gray-700"><?= htmlentities($ticket->category); ?></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-xs text-gray-500 mb-3">Created: <?= $ticket->created_at; ?></div>
+
                                     <div class="flex space-x-2">
                                         <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
-                                           class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                                            <svg class="h-3.5 w-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
+                                           class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 whitespace-nowrap">
+                                            <heroicon-pencil class="h-3.5 w-3.5 mr-1" />
                                             Edit
                                         </a>
                                         <a href="<?= Config::get('URL') . 'ticket/delete/' . $ticket->id; ?>"
                                            onclick="return confirm('Are you sure you want to delete this ticket?');"
-                                           class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200">
-                                            <svg class="h-3.5 w-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
+                                           class="inline-flex items-center px-2.5 py-1.5 border border-red-100 text-xs font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 whitespace-nowrap">
+                                            <heroicon-trash class="h-3.5 w-3.5 mr-1" />
                                             Delete
                                         </a>
                                     </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
                 </div>
             <?php else: ?>
                 <div class="text-center py-8 bg-gray-50 rounded-lg border border-gray-200 mt-8">
@@ -293,13 +362,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.datatables.net/1.13.0/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.0/css/jquery.dataTables.min.css" />
 
+    <style>
+        @media (max-width: 768px) {
+            /* Mobile view adjustments */
+            .w-3/5 {
+            width: 95% !important;
+        }
+
+            /* Line clamp for description */
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            /* Make chat history scrollable */
+            #chat-history {
+                max-height: 400px;
+            }
+
+            /* Adjust DataTables filter and search on mobile */
+            .dataTables_wrapper .dataTables_filter {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            /* Fix card layout in mobile view */
+            .ticket-card {
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+
+            .lg\:hidden > div {
+                width: 100% !important;
+            }
+        }
+    </style>
+
     <script>
         $(document).ready(function () {
-            // init tickets table with basic config
+            // init tickets table with basic config for desktop view
             $('#ticketsTable').DataTable({
-                responsive: true,
                 paging: false,
                 order: [[0, 'asc']],
+                autoWidth: true,
                 columnDefs: [
                     { width: '5%', targets: 0 },
                     { width: '15%', targets: 1 },
@@ -326,12 +438,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 dom: '<"flex flex-wrap gap-4 items-center justify-between py-4"<"flex items-center"l>>rt<"flex flex-wrap gap-4 items-center justify-between py-4"<"flex items-center"i><"flex items-center"p>>'
             });
 
-            // click handlers for table rows
             function attachClickHandlers() {
+                // Desktop view: table rows
                 $('.ticket-row').off('click').on('click', function () {
                     window.location.href = '<?= Config::get("URL"); ?>ticketHandler/index/' + $(this).data('id');
                 });
                 $('.ticket-row a').off('click').on('click', function (e) { e.stopPropagation(); });
+
+                // Mobile view: card items
+                $('.ticket-card').off('click').on('click', function () {
+                    window.location.href = '<?= Config::get("URL"); ?>ticketHandler/index/' + $(this).data('id');
+                });
+                $('.ticket-card a').off('click').on('click', function (e) { e.stopPropagation(); });
             }
             attachClickHandlers();
 
@@ -363,10 +481,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $('.dataTable thead th').addClass('border-b-2 border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100');
             $('table.dataTable tbody td').addClass('py-3');
 
-            // prevent horizontal scroll
-            $('.dataTables_wrapper').addClass('w-full').css('max-width', '100%');
-            $('.dataTables_scrollBody').css('overflow-x', 'hidden');
+            // Make table stay fixed width without scroll
+            $('.dataTables_wrapper').addClass('w-full overflow-x-visible');
+            $('table.dataTable').addClass('table-fixed w-full');
 
+            function adjustForViewportSize() {
+                // Only handle responsive layout adjustments - no menu manipulation
+                // The mobile menu will be handled by the button click only
+            }
+
+            // Initial adjustment and listen for window resize
+            adjustForViewportSize();
+            $(window).resize(adjustForViewportSize);
         });
     </script>
 <?php
