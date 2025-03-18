@@ -1,4 +1,42 @@
 <?php
+$current_page = 'index';
+
+// Force reset of chat history when arriving at index page
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (!isset($_SESSION['last_page']) || $_SESSION['last_page'] !== $current_page) {
+        // Coming from a different page or first visit, reset the chat history
+        $_SESSION['temp_index_history'] = [
+            ["role" => "system", "content" => "You are a helpful assistant."]
+        ];
+    }
+}
+
+// Always ensure history exists
+if (!isset($_SESSION['temp_index_history'])) {
+    $_SESSION['temp_index_history'] = [
+        ["role" => "system", "content" => "You are a helpful assistant."]
+    ];
+}
+
+// Store current page for next request
+$_SESSION['last_page'] = $current_page;
+
+// process form data before any HTML output
+if (isset($_POST['reset_session'])) {
+    $_SESSION['temp_index_history'] = [
+        ["role" => "system", "content" => "You are a helpful assistant."]
+    ];
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
+// Transfer chat to aiChat page
+if (isset($_POST['continue_in_chat'])) {
+    $_SESSION['history'] = $_SESSION['temp_index_history'];
+    header("Location: " . Config::get('URL') . "aiChat/index");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     AIChatModel::handleRequest(true);
 }
@@ -390,7 +428,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $(window).resize(adjustForViewportSize);
         });
     </script>
-<?php
-// Flush the output buffer and send all output to the browser
-// ob_end_flush();
-?>

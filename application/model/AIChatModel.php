@@ -29,7 +29,7 @@ class AIChatModel {
             "stream" => false
         ];
 
-        // Initialize cURL session for API request
+// Initialize cURL session for API request
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::$apiUrl); // Set API URL
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as a string
@@ -37,7 +37,7 @@ class AIChatModel {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Attach headers
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); // Send data as JSON
 
-        // Execute API request
+// Execute API request
         $response = curl_exec($ch);
         $error = curl_errno($ch) ? curl_error($ch) : null; // Capture any errors
         curl_close($ch); // Close cURL session
@@ -47,7 +47,7 @@ class AIChatModel {
             return;
         }
 
-        // Process response
+// Process response
         $responseData = json_decode($response, true);
         if (isset($responseData['message']['content'])) {
             $_SESSION[$sessionKey][] = ["role" => "assistant", "content" => $responseData['message']['content']];
