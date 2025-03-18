@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    AIChatModel::handleRequest(false);
+    AIChatModel::handleRequest(true);
 }
 ?>
     <div class="w-full px-4">
