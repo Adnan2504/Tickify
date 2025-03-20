@@ -57,6 +57,7 @@
 | 11.3.2025 | 1.1       | 10:00-12:10    | 2h10min | LBS | Datei für Icons erstellt, Icons ausgewählt und hinzugefügt, sowie die Implementierung der Icons im Header vorgenommen                                                                                                                                                                          |          |         |
 | 13.3.2025 | 1.1       | 09:25:00-12:50 | 3h10min | LBS | Mobiles Menü vollständig überarbeitet und Icons hinzugefügt. Anschließend einen Fehler behoben, bei dem sich das Menü selbst öffnete und nicht mehr in den Desktop-Modus wechselte                                                                                                             |          |         |
 | 14.3.2025 | /         | /              | /       | /   | Englisch Matura Probe (freigestellt)                                                                                                                                                                                                                                                           |          |         |
+| 18.3.2025 | 1.1       | 10:00-12:20    | 2h      | LBS | Index/index.php AI Chat Buttons fix + Header fix Icons Update (file icons.php wird nicht mehr benutzt musst gelöscht werden)                                                                                                                                                                   |          |         |
 
 
 
