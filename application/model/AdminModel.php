@@ -92,5 +92,4 @@ class AdminModel
 
         return false;
     }
-
 }
