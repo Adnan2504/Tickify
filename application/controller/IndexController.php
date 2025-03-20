@@ -2,21 +2,27 @@
 
 class IndexController extends Controller
 {
-    /**
-     * Construct this object by extending the basic Controller class
-     */
     public function __construct()
     {
         parent::__construct();
         Auth::checkAuthentication();
+
     }
 
-    /**
-     * Handles what happens when user moves to URL/index/index - or - as this is the default controller, also
-     * when user moves to /index or enter your application at base level
-     */
     public function index()
     {
+        if (isset($_POST['user_text'])) {
+            $_SESSION['temp_index_history'][] = array("role" => "user", "content" => $_POST['user_text']);
+            Redirect::to('index/index');
+            exit();
+        }
+
+        if (isset($_POST['continue_in_chat'])) {
+            $_SESSION['history'] = $_SESSION['temp_index_history'];
+            Redirect::to('aiChat/index');
+            exit();
+        }
+
         //Save only the last 3 tickets (-3 from the end and 3 ist the length)
         $allTickets = TicketModel::getAllTickets();
         $latestTickets = array_slice($allTickets, -3, 3);
