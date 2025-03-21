@@ -9,9 +9,8 @@ class ProfileController extends Controller
     {
         parent::__construct();
 
-        if (!Session::userIsLoggedIn() || !Session::get("user_account_type") <= 5)
+        if (!Session::get("user_account_type") >= 5)
             Redirect::home();
-
     }
 
     /**
@@ -21,7 +20,8 @@ class ProfileController extends Controller
     public function index()
     {
         $this->View->render('profile/index', array(
-            'users' => UserModel::getPublicProfilesOfAllUsers())
+            'users' => UserModel::getPublicProfilesOfAllUsers(),
+            'availableAccType' => UserModel::getAvailableAccountTypes()),
         );
     }
 

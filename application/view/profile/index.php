@@ -8,7 +8,6 @@
         <div class="p-6">
             <!-- echo out the system feedback (error and success messages) -->
             <?php $this->renderFeedbackMessages(); ?>
-            <?php $availableAccType = UserModel::getAvailableAccountTypes() ?>
 
             <div class="overflow-x-auto">
                 <table id="users-table" class="min-w-full divide-y divide-gray-200">
@@ -44,7 +43,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                                            <?= htmlspecialchars(UserModel::getAccountTypeLang($availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
+                                            <?= htmlspecialchars(UserModel::getAccountTypeLang($this->availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
                                         </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
