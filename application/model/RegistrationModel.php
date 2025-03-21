@@ -18,7 +18,7 @@ class RegistrationModel
         // clean the input
         $user_name = strip_tags(Request::post('user_name'));
         $user_email = strip_tags(Request::post('user_email'));
-        $user_password_new = Request::post('user_password_new');
+        $user_password_new = Request::post('user_password');
 
         // crypt the password with the PHP 5.5's password_hash() function, results in a 60 character hash string.
         // @see php.net/manual/en/function.password-hash.php for more, especially for potential options
