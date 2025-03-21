@@ -7,7 +7,7 @@
         <div class="mb-6">
             <h1 class="text-3xl font-bold mb-2 text-center">Register</h1>
             <p class="text-center text-gray-600 mb-4">Create an account</p>
-            <form action="<?php echo Config::get('URL'); ?>register/index" method="post" class="space-y-4">
+            <form action="<?php echo Config::get('URL'); ?>register/register_action" method="post" class="space-y-4">
                 <div class="form-group">
                     <label for="user_name" class="block text-gray-700 text-center">Username</label>
                     <input type="text" id="user_name" name="user_name" placeholder="Enter username" required
