@@ -8,9 +8,6 @@ class ProfileController extends Controller
     public function __construct()
     {
         parent::__construct();
-
-        if (!Session::get("user_account_type") >= 5)
-            Redirect::home();
     }
 
     /**
@@ -19,6 +16,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
+
+        if (Session::get('user_account_type') < 4)
+            Redirect::home();
+
         $this->View->render('profile/index', array(
             'users' => UserModel::getPublicProfilesOfAllUsers(),
             'availableAccType' => UserModel::getAvailableAccountTypes()),
