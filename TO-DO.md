@@ -43,6 +43,11 @@
 ### Chat
     - Display user Avatar in chat next to the image
 
+
+###
+    Language Ijection enabale in setting of PHPStorm
+
+
 ## Laurentiu Iordachi
 - DESIGN
 - Placeholder

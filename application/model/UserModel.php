@@ -128,7 +128,6 @@ class UserModel
     }
 
 
-
     /**
      * Checks if a username is already taken
      *
