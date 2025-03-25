@@ -102,6 +102,9 @@
                         <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#cog-6-tooth"/></svg>User Options
                     </a>
                     <ul class="absolute hidden bg-white shadow-lg rounded-md p-2 mt-1 w-48 right-0 group-hover:block transition-all duration-200 z-50">
+                        <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center p-3 hover:bg-gray-200">
+                                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>My Profile
+                            </a></li>
                         <li><a href="<?php echo Config::get('URL'); ?>user/editAvatar" class="flex items-center p-3 hover:bg-gray-200">
                                 <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>Edit Avatar
                             </a></li>
@@ -172,7 +175,10 @@
                         <li class="border-t border-gray-600 mt-4 pt-4">
                             <p class="text-gray-400 px-4 mb-2">User Options</p>
                             <ul class="pl-4">
-                                <li><a href="<?php echo Config::get('URL'); ?>user/editAvatar" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
+                                <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
+                                        <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>My Profile
+                                    </a></li>
+                                <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
                                         <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>Edit Avatar
                                     </a></li>
                                 <li><a href="<?php echo Config::get('URL'); ?>user/editusername" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
