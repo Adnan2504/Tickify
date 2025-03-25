@@ -20,7 +20,8 @@ class AdminController extends Controller
     public function index()
     {
         $this->View->render('admin/index', array(
-                'users' => UserModel::getPublicProfilesOfAllUsers())
+                'users' => UserModel::getPublicProfilesOfAllUsers(),
+                'availableAccType' => UserModel::getAvailableAccountTypes()),
         );
     }
 

@@ -38,7 +38,7 @@
                             </td>
                             <td>
                                 <select name="account_type" id="account_type">
-                                    <?php foreach ($availableAccType as $type) : ?>
+                                    <?php foreach ($this->availableAccType as $type) : ?>
                                         <option value="<?= $type->account_type; ?>" <?= $type->account_type === $user->user_account_type ? 'selected' : ''; ?>>
                                             <?= $type->lang; ?>
                                         </option>
