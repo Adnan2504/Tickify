@@ -7,7 +7,7 @@ class TicketModel
 {
 
     /**
-     * Get all tickets created by the current logged-in user
+     * Get all tickets created by the current logged-in user based on User Role
      * @return array an array with ticket objects
      */
     public static function getAllTickets()

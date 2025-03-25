@@ -40,11 +40,19 @@
                     </div>
 
                     <!-- category field -->
-                    <div>
-                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category:</label>
-                        <input type="text" id="category" name="category" value="<?php echo htmlentities($this->ticket->category); ?>"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+                    <div class="mb-4">
+                        <label for="category" class="block text-gray-700 font-medium mb-2">Category:</label>
+                        <select id="category" name="category" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Bug" <?php echo $this->ticket->category === 'Bug' ? 'selected' : ''; ?>>Bug</option>
+                            <option value="Feature Request" <?php echo $this->ticket->category === 'Feature Request' ? 'selected' : ''; ?>>Feature Request</option>
+                            <option value="Improvement" <?php echo $this->ticket->category === 'Improvement' ? 'selected' : ''; ?>>Improvement</option>
+                            <option value="Task" <?php echo $this->ticket->category === 'Task' ? 'selected' : ''; ?>>Task</option>
+                            <option value="Documentation" <?php echo $this->ticket->category === 'Documentation' ? 'selected' : ''; ?>>Documentation</option>
+                            <option value="Support" <?php echo $this->ticket->category === 'Support' ? 'selected' : ''; ?>>Support</option>
+                        </select>
                     </div>
+
 
                     <!-- submit button -->
                     <div class="pt-2">
