@@ -61,7 +61,7 @@ class AdminModel
      *
      * @return bool
      */
-    public static function setAccountType($typeId = null, $userId = null, $newUsername = null, $newEmailAddress = null) {
+    public static function updateUserProfile($typeId = null, $userId = null, $newUsername = null, $newEmailAddress = null) {
         if (!$typeId || !$userId) {
             return false;
         }

@@ -27,7 +27,7 @@ class AdminController extends Controller
 
     public function actionAccountSettings()
     {
-        AdminModel::setAccountType(
+        AdminModel::updateUserProfile(
             Request::post('account_type'),
             Request::post('user_id'),
             Request::post('userNameInput'),
