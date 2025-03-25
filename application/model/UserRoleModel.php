@@ -36,6 +36,7 @@ class UserRoleModel
      * Writes the new account type marker to the database and to the session
      *
      * @param $type
+     * @param $userID
      *
      * @return bool
      */

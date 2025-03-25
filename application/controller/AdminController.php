@@ -33,7 +33,6 @@ class AdminController extends Controller
             Request::post('userNameInput'),
             Request::post('userEmail')
         );
-
         Redirect::to("admin");
     }
 }
