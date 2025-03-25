@@ -33,11 +33,19 @@
             </div>
 
             <!-- category field -->
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="category" class="block text-gray-700 font-medium mb-2">Category:</label>
-                <input type="text" id="category" name="category" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <select id="category" name="category" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Bug">Bug</option>
+                    <option value="Feature Request">Feature Request</option>
+                    <option value="Improvement">Improvement</option>
+                    <option value="Task">Task</option>
+                    <option value="Documentation">Documentation</option>
+                    <option value="Support">Support</option>
+                </select>
             </div>
+
 
             <!-- submit button -->
             <div class="flex justify-end">
