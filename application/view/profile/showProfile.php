@@ -18,5 +18,4 @@
                 <div>Your account type is: <?= $this->user_account_type_long; ?></div>
             </div>
         <?php } ?>
-
 </div>

@@ -66,29 +66,14 @@ class AdminModel
             return false;
         }
 
-        $db = DatabaseFactory::getFactory()->getConnection();
-
         if ($userId == Session::get('user_id')) {
             Session::add('feedback_negative', 'Cannot edit your own account');
             return false;
         }
 
-        $query = $db->prepare("UPDATE users SET user_account_type = :typeId 
-                                    WHERE user_id = :userId 
-                                    LIMIT 1");
-
+        UserRoleModel::saveRoleToDatabase($typeId, $userId);
         UserModel::saveNewUserName($userId, $newUsername);
         UserModel::saveNewEmailAddress($userId, $newEmailAddress);
-
-        $query->execute([
-            ':typeId' => $typeId,
-            ':userId' => $userId
-        ]);
-
-        if ($query->rowCount() == 1) {
-            Session::add('feedback_positive', 'Account successfully updated');
-            return true;
-        }
 
         return false;
     }

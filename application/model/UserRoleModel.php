@@ -39,26 +39,15 @@ class UserRoleModel
      *
      * @return bool
      */
-    public static function saveRoleToDatabase($type)
+    public static function saveRoleToDatabase($type, $userID)
     {
-        // if $type is not 1 or 2
-        if (!in_array($type, [1, 2])) {
-            return false;
-        }
-
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $query = $database->prepare("UPDATE users SET user_account_type = :new_type WHERE user_id = :user_id LIMIT 1");
         $query->execute(array(
             ':new_type' => $type,
-            ':user_id' => Session::get('user_id')
+            ':user_id' => $userID
         ));
-
-        if ($query->rowCount() == 1) {
-            // set account type in session
-            Session::set('user_account_type', $type);
-            return true;
-        }
 
         return false;
     }
