@@ -59,25 +59,25 @@ class TicketController extends Controller
     /**
      * This method controls what happens when you move to /ticket/edit(/XX) in your app.
      * Shows the current content of the ticket and an editing form.
-     * @param $note_id int id of the ticket
+     * @param $ticket_id int id of the ticket
      */
-    public function edit($note_id)
+    public function edit($ticket_id)
     {
         $this->View->render('ticket/edit', array(
-            'ticket' => TicketModel::getTicket($note_id)
+            'ticket' => TicketModel::getTicket($ticket_id)
         ));
     }
 
     /**
      * This method controls what happens when you move to /ticket/edit(/XX) in your app.
      * Shows the current content of the ticket and an editing form.
-     * @param $note_id int id of the ticket
+     * @param $ticket_id int id of the ticket
      */
-    public function ticket_handler($note_id)
+    public function ticket_handler($ticket_id)
     {
         $this->View->render('ticketHandler/index', array(
-            'ticket' => TicketModel::getTicket($note_id),
-            'messages' => TicketModel::getTicket($note_id)
+            'ticket' => TicketModel::getTicket($ticket_id),
+            'messages' => TicketModel::getTicket($ticket_id)
         ));
     }
 
@@ -94,11 +94,6 @@ class TicketController extends Controller
         $priority    = Request::post('priority');
         $category    = Request::post('category');
         $status      = Request::post('status');
-
-        if ($status === null) {
-            $ticket = TicketModel::getTicket($ticket_id);
-            $status = $ticket->status;
-        }
 
         TicketModel::updateTicket($ticket_id, $subject, $description, $priority, $status, $category);
         Redirect::to('ticket');
