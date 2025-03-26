@@ -1,6 +1,4 @@
 <?php
-// start output buffering at the very beginning of the file
-// ob_start();   // output was sent to the browser before all session operations were completed which caused the error "headers already sent"
 // only start session if one doesn't already exist
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -154,23 +152,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($this->tickets): ?>
                 <div class="w-full max-w-7xl mx-auto mt-8">
                     <!-- Desktop view: table - only show on larger screens (lg and above) -->
-                    <div class="hidden lg:block rounded-xl shadow-sm w-full max-w-[1000px] mx-auto">
+                    <div class="hidden lg:block rounded-2xl shadow-lg w-full max-w-[1000px] mx-auto overflow-hidden border border-gray-100">
                         <table id="ticketsTable" class="w-full bg-white table-fixed">
                             <thead>
-                            <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Subject</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Priority</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Category</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                            <tr class="bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50">
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">Subject</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">Description</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">Priority</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">Category</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">Status</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Created At</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             <?php foreach ($this->tickets as $ticket): ?>
-                                <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out" data-id="<?= $ticket->id; ?>">
+                                <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer" data-id="<?= $ticket->id; ?>">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $ticket->id; ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->subject); ?></td>
                                     <td class="px-6 py-4 truncate max-w-[200px] text-sm text-gray-500"><?= htmlentities($ticket->description); ?></td>
@@ -233,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="lg:hidden w-full max-w-full">
                         <div class="grid grid-cols-1 gap-4 px-2 sm:px-4 py-3">
                             <?php foreach ($this->tickets as $ticket): ?>
-                                <div class="ticket-card bg-white rounded-lg shadow-sm p-3 sm:p-4 border border-gray-100 hover:shadow-md transition duration-200" data-id="<?= $ticket->id; ?>">
+                                <div class="ticket-card bg-white rounded-xl shadow-md p-4 sm:p-5 border border-gray-100 hover:shadow-lg hover:border-blue-100 transition-all duration-200" data-id="<?= $ticket->id; ?>">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="text-sm font-semibold text-gray-700">ID: <?= $ticket->id; ?></span>
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full whitespace-nowrap
@@ -454,6 +452,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     </script>
 <?php
-// Flush the output buffer and send all output to the browser
-// ob_end_flush();
 ?>

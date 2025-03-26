@@ -105,18 +105,6 @@
                         <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center p-3 hover:bg-gray-200">
                                 <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>My Profile
                             </a></li>
-                        <li><a href="<?php echo Config::get('URL'); ?>user/editAvatar" class="flex items-center p-3 hover:bg-gray-200">
-                                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>Edit Avatar
-                            </a></li>
-                        <li><a href="<?php echo Config::get('URL'); ?>user/editusername" class="flex items-center p-3 hover:bg-gray-200">
-                                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil"/></svg>Edit Username
-                            </a></li>
-                        <li><a href="<?php echo Config::get('URL'); ?>user/edituseremail" class="flex items-center p-3 hover:bg-gray-200">
-                                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#at-symbol"/></svg>Edit Email
-                            </a></li>
-                        <li><a href="<?php echo Config::get('URL'); ?>user/changePassword" class="flex items-center p-3 hover:bg-gray-200">
-                                <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#key"/></svg>Change Password
-                            </a></li>
                         <li><a href="<?php echo Config::get('URL'); ?>login/logout" class="flex items-center p-3 hover:bg-red-100 text-red-600">
                                 <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#arrow-left-start-on-rectangle"/></svg>Logout
                             </a></li>
@@ -177,18 +165,6 @@
                             <ul class="pl-4">
                                 <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
                                         <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>My Profile
-                                    </a></li>
-                                <li><a href="<?php echo Config::get('URL'); ?>user/index" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
-                                        <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil-square"/></svg>Edit Avatar
-                                    </a></li>
-                                <li><a href="<?php echo Config::get('URL'); ?>user/editusername" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
-                                        <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#pencil"/></svg>Edit Username
-                                    </a></li>
-                                <li><a href="<?php echo Config::get('URL'); ?>user/edituseremail" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
-                                        <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#at-symbol"/></svg>Edit Email
-                                    </a></li>
-                                <li><a href="<?php echo Config::get('URL'); ?>user/changePassword" class="flex items-center py-2 px-4 hover:bg-gray-700 rounded">
-                                        <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#key"/></svg>Change Password
                                     </a></li>
                                 <li><a href="<?php echo Config::get('URL'); ?>login/logout" class="flex items-center py-2 px-4 hover:bg-red-700 rounded text-red-300">
                                         <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#arrow-left-start-on-rectangle"/></svg>Logout
@@ -294,6 +270,5 @@
         });
     });
 </script>
-
 </body>
 </html>

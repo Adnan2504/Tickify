@@ -1,20 +1,25 @@
-<div class="container">
-    <h1>UserController/editUsername</h1>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl">
+        <div class="px-8 py-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Update Username</h1>
+            <?php $this->renderFeedbackMessages(); ?>
 
-    <!-- echo out the system feedback (error and success messages) -->
-    <?php $this->renderFeedbackMessages(); ?>
+            <form action="<?php echo Config::get('URL'); ?>user/editUsername_action" method="post" class="space-y-6">
+                <div>
+                    <label for="user_name" class="block text-sm font-medium text-gray-700">New Username</label>
+                    <input type="text" name="user_name" id="user_name" required
+                           class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150"
+                           pattern="[a-zA-Z0-9]{2,64}"
+                           placeholder="2-64 characters, letters and numbers only" />
+                </div>
 
-    <div class="box">
-        <h2>Change your username</h2>
+                <input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>" />
 
-        <form action="<?php echo Config::get('URL'); ?>user/editUserName_action" method="post">
-            <!-- btw http://stackoverflow.com/questions/774054/should-i-put-input-tag-inside-label-tag -->
-            <label>
-                New username: <input type="text" name="user_name" required />
-            </label>
-			<!-- set CSRF token at the end of the form -->
-			<input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>" />
-            <input type="submit" value="Submit" />
-        </form>
+                <button type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
+                    Update Username
+                </button>
+            </form>
+        </div>
     </div>
 </div>
