@@ -127,9 +127,9 @@ class TicketModel
         }
 
         $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "DELETE FROM support_tickets WHERE id = :ticket_id AND created_by = :user_id LIMIT 1";
+        $sql = "DELETE FROM support_tickets WHERE id = :ticket_id";
         $query = $database->prepare($sql);
-        $query->execute(array(':ticket_id' => $ticket_id, ':user_id' => Session::get('user_id')));
+        $query->execute(array(':ticket_id' => $ticket_id));
         if ($query->rowCount() === 1) {
             return true;
         }
