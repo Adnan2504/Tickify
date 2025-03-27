@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8 pt-8">
     <div class="max-w-7xl mx-auto">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
@@ -10,7 +10,7 @@
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex items-center">
                     <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Open Tickets</h3>
+                        <h3 class="text-lg font-medium text-blue-600">Open Tickets</h3>
                         <p class="mt-2 text-3xl font-semibold text-blue-600"><?= isset($this->ticketStats['open_tickets']) ? htmlspecialchars($this->ticketStats['open_tickets']) : '0' ?></p>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex items-center">
                     <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">In Progress</h3>
+                        <h3 class="text-lg font-medium text-yellow-600">In Progress</h3>
                         <p class="mt-2 text-3xl font-semibold text-yellow-600"><?= isset($this->ticketStats['in_progress_tickets']) ? htmlspecialchars($this->ticketStats['in_progress_tickets']) : '0' ?></p>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex items-center">
                     <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Solved Tickets</h3>
+                        <h3 class="text-lg font-medium text-green-600">Solved Tickets</h3>
                         <p class="mt-2 text-3xl font-semibold text-green-600"><?= isset($this->ticketStats['solved_tickets']) ? htmlspecialchars($this->ticketStats['solved_tickets']) : '0' ?></p>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex items-center">
                     <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Messages Sent</h3>
+                        <h3 class="text-lg font-medium text-purple-600">Messages Sent</h3>
                         <p class="mt-2 text-3xl font-semibold text-purple-600"><?= isset($this->messageStats['total_messages']) ? htmlspecialchars($this->messageStats['total_messages']) : '0' ?></p>
                     </div>
                 </div>

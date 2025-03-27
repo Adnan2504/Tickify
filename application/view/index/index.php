@@ -1,18 +1,39 @@
 <?php
-// only start session if one doesn't already exist
+// Start session at the very beginning
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Process all session modifications first
+if (isset($_POST['reset_session'])) {
+    // Clear both temporary and main chat histories
+    $_SESSION['temp_index_history'] = [
+        ["role" => "system", "content" => "You are a helpful assistant."]
+    ];
+    unset($_SESSION['temp_index_history']); // Clear only the temporary chat history
+}
+
+if (isset($_POST['continue_in_chat'])) {
+    if (isset($_SESSION['temp_index_history'])) {
+        if (!isset($_SESSION['history'])) {
+            $_SESSION['history'] = $_SESSION['temp_index_history'];
+        } else {
+            // Get last message from temp history
+            $lastMessage = end($_SESSION['temp_index_history']);
+            if ($lastMessage && $lastMessage['role'] === 'assistant') {
+                $_SESSION['history'][] = $_SESSION['temp_index_history'][count($_SESSION['temp_index_history'])-2]; // Add user message
+                $_SESSION['history'][] = $lastMessage; // Add AI response
+            }
+        }
+        unset($_SESSION['temp_index_history']); // Clear temp history after transfer
+    }
+    header("Location: " . Config::get('URL') . "aiChat/index");
+    exit();
+}
+
 $current_page = 'index';
 
-// Debug information
-$_SESSION['debug_last_page'] = isset($_SESSION['last_page']) ? $_SESSION['last_page'] : 'None';
-$_SESSION['debug_current_page'] = $current_page;
-$_SESSION['debug_request_method'] = $_SERVER['REQUEST_METHOD'];
-
-
-// Force reset of chat history when arriving at index page
+// Reset chat history when needed
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     if (!isset($_SESSION['last_page']) || $_SESSION['last_page'] !== $current_page) {
         $_SESSION['temp_index_history'] = [
@@ -21,33 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     }
 }
 
-// Always ensure history exists
+// Ensure history exists
 if (!isset($_SESSION['temp_index_history'])) {
     $_SESSION['temp_index_history'] = [
         ["role" => "system", "content" => "You are a helpful assistant."]
     ];
 }
 
-// Store current page for next request
 $_SESSION['last_page'] = $current_page;
 
-// process form data before any HTML output
-if (isset($_POST['reset_session'])) {
-    $_SESSION['temp_index_history'] = [
-        ["role" => "system", "content" => "You are a helpful assistant."]
-    ];
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit();
-}
-
-// Transfer chat to aiChat page
-if (isset($_POST['continue_in_chat'])) {
-    $_SESSION['history'] = $_SESSION['temp_index_history'];
-    header("Location: " . Config::get('URL') . "aiChat/index");
-    exit();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Process chat request if needed
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['reset_session'])) {
     AIChatModel::handleRequest(true);
 }
 ?>
@@ -141,9 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- chat input -->
                 <div class="p-4 bg-gray-50 border-t border-gray-200">
                     <form method="post" class="flex gap-2" id="chat-form">
-                        <textarea id="prompt" name="prompt" rows="1" placeholder="Type your message here..." required class="flex-1 rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none overflow-hidden"></textarea>
-                        <button type="submit" class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        <textarea id="prompt" name="prompt" rows="1" placeholder="Type your message here..." required class="flex-1 rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[40px] max-h-[72px] scrollbar-hide overflow-y-auto"></textarea>
+                        <style>
+                            .scrollbar-hide::-webkit-scrollbar {
+                                display: none;
+                            }
+                            .scrollbar-hide {
+                                -ms-overflow-style: none;
+                                scrollbar-width: none;
+                            }
+                        </style>
+                        <button type="submit" class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         </button>
                     </form>
                 </div>

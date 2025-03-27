@@ -63,7 +63,7 @@
 <body class="bg-gray-100">
 
 <!-- Header -->
-<header class="bg-white shadow-md rounded-lg p-5 mb-6 flex items-center justify-between text-lg relative z-50">
+<header class="bg-white shadow-md rounded-lg p-5 flex items-center justify-between text-lg relative z-50">
     <!-- Brand Name -->
     <a href="<?php echo Config::get('URL'); ?>index/index" class="text-2xl font-extrabold text-gray-900 hover:text-blue-500 hover:scale-110 transform transition-all duration-200">
         Tickify
@@ -270,5 +270,6 @@
         });
     });
 </script>
+
 </body>
 </html>

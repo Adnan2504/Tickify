@@ -18,7 +18,16 @@ class IndexController extends Controller
         }
 
         if (isset($_POST['continue_in_chat'])) {
-            $_SESSION['history'] = $_SESSION['temp_index_history'];
+            // Initialize history if it doesn't exist
+            if (!isset($_SESSION['history'])) {
+                $_SESSION['history'] = [["role" => "system", "content" => "You are a helpful assistant."]];
+            }
+            // Append temp history (skip system message)
+            if (isset($_SESSION['temp_index_history']) && count($_SESSION['temp_index_history']) > 1) {
+                for ($i = 1; $i < count($_SESSION['temp_index_history']); $i++) {
+                    $_SESSION['history'][] = $_SESSION['temp_index_history'][$i];
+                }
+            }
             Redirect::to('aiChat/index');
             exit();
         }
