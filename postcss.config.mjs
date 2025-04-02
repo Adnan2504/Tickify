@@ -1,5 +1,9 @@
 export default {
     plugins: {
-      "@tailwindcss/postcss": {},
+        "@tailwindcss/postcss": {},
+        "autoprefixer": {
+            flexbox: "no-2009",
+            grid: "autoplace"
+        }
     }
-  }
+}

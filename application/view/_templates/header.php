@@ -1,9 +1,10 @@
 <!doctype html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tickify</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="icon" href="data:;base64,=">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
@@ -63,9 +64,9 @@
 <body class="bg-gray-100">
 
 <!-- Header -->
-<header class="bg-white shadow-md rounded-lg p-5 flex items-center justify-between text-lg relative z-50">
+<header class="bg-white shadow-md rounded-lg p-4 flex items-center justify-between text-base relative z-50">
     <!-- Brand Name -->
-    <a href="<?php echo Config::get('URL'); ?>index/index" class="text-2xl font-extrabold text-gray-900 hover:text-blue-500 hover:scale-110 transform transition-all duration-200">
+    <a href="<?php echo Config::get('URL'); ?>index/index" class="text-xl font-extrabold text-gray-900 hover:text-blue-500 hover:scale-110 transform transition-all duration-200">
         Tickify
     </a>
 
@@ -76,8 +77,8 @@
 
 
     <!-- Desktop Navigation -->
-    <nav class="hidden lg:block absolute left-1/2 transform -translate-x-1/2">
-        <ul class="flex flex-nowrap justify-center space-x-4 lg:space-x-8 xl:space-x-14">
+    <nav class="hidden lg:block absolute transition-all duration-300 left-1/3 xl:left-1/2 transform -translate-x-1/2">
+        <ul class="flex flex-nowrap space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-10">
             <li><a href="<?php echo Config::get('URL'); ?>index/index" class="flex items-center font-semibold text-gray-700 hover:text-blue-500 whitespace-nowrap py-2">
                     <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><use href="#home"/></svg>Index
                 </a></li>
@@ -94,8 +95,8 @@
     </nav>
 
     <!-- User Navigation -->
-    <nav class="hidden lg:block">
-        <ul class="flex space-x-10">
+    <nav class="hidden lg:block transition-all duration-300">
+        <ul class="flex space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-10">
             <?php if (Session::userIsLoggedIn()) : ?>
                 <li class="relative group">
                     <a href="#" class="flex items-center font-semibold text-gray-700 hover:text-blue-500">
@@ -140,7 +141,7 @@
     <div id="mobile-menu" class="fixed inset-0 bg-gray-800 bg-opacity-75 lg:hidden hidden z-40">
         <div class="flex justify-end p-4">
             <button id="close-mobile-menu" class="text-white">
-                <svg class="w-8 h-8" xmlns<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         <div class="flex flex-col items-center">

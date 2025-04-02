@@ -1,5 +1,5 @@
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8">
+    <div class="max-w-2xl mx-auto px-4">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit your avatar</h1>
 
         <?php $this->renderFeedbackMessages(); ?>
