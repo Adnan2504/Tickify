@@ -72,11 +72,8 @@ class TicketHandlerController extends Controller
 
             $result = TicketHandlerModel::saveMessage($ticket_id, Session::get('user_id'), $message, $attachment_path);
 
-            if ($result) {
-                Session::add('feedback_positive', 'Message sent successfully.');
-            } else {
+            if (!$result)
                 Session::add('feedback_negative', 'An error occurred while sending the message.');
-            }
 
             header('Location: ' . Config::get('URL') . 'ticketHandler/index/' . $ticket_id);
             exit;
