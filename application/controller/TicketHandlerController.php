@@ -91,12 +91,12 @@ class TicketHandlerController extends Controller
             return;
         }
 
-        $ticket_id = intval($_POST['ticket_id']);
-        $subject = trim($_POST['subject']);
+        $ticket_id   = intval($_POST['ticket_id']);
+        $subject     = trim($_POST['subject']);
         $description = trim($_POST['description']);
-        $priority = trim($_POST['priority']);
-        $category = trim($_POST['category']);
-        $status = trim($_POST['status']);
+        $priority    = trim($_POST['priority']);
+        $category    = trim($_POST['category']);
+        $status      = trim($_POST['status']);
 
         $allowed_statuses = ['open', 'waiting', 'resolved'];
         if (!in_array($status, $allowed_statuses, true)) {
@@ -112,7 +112,8 @@ class TicketHandlerController extends Controller
             return;
         }
 
-        if (TicketModel::updateTicket($ticket_id, $subject, $description, $priority,  $status, $category)) {
+        // Use TicketHandlerModel instead of TicketModel
+        if (TicketHandlerModel::updateTicket($ticket_id, $subject, $description, $priority, $status, $category)) {
             Session::add('feedback_positive', 'Ticket updated successfully.');
         } else {
             Session::add('feedback_negative', 'Failed to update ticket.');
@@ -120,6 +121,7 @@ class TicketHandlerController extends Controller
 
         Redirect::to('ticketHandler/index/' . $ticket_id);
     }
+
 
     public function closeTicket()
     {

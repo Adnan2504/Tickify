@@ -68,7 +68,7 @@ return array(
     'DB_NAME' => 'tickify',
     'DB_USER' => 'root',
     'DB_PASS' => '',
-    'DB_PORT' => '3307',
+    'DB_PORT' => '3306',
     'DB_CHARSET' => 'utf8',
     /**
      * Configuration for: Captcha size
@@ -113,7 +113,7 @@ return array(
     'GRAVATAR_DEFAULT_IMAGESET' => 'mm',
     'GRAVATAR_RATING' => 'pg',
     'AVATAR_SIZE' => 44,
-    'AVATAR_JPEG_QUALITY' => 85,
+    'AVATAR_JPEG_QUALITY' => 95,
     'AVATAR_DEFAULT_IMAGE' => 'default.jpg',
     /**
      * Configuration for: Encryption Keys

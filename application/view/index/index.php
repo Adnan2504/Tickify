@@ -24,7 +24,7 @@
         <?php $this->renderFeedbackMessages(); ?>
 
         <h2 class="text-2xl font-bold text-blue-600 mb-3 inline-flex items-center justify-center w-full text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
@@ -142,18 +142,17 @@
                             <tbody class="bg-white divide-y divide-gray-100">
                             <?php foreach ($reversedTickets as $ticket): ?>
                                 <tr class="ticket-row hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer"
-                                    data-id="<?= $ticket->id; ?>">
-                                    <td class="px-8 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <?= $ticket->id; ?>
-                                    </td>
-                                    <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-700">
-                                        <?= htmlentities($ticket->subject); ?>
-                                    </td>
+                                    data-id="<?= $ticket->id; ?>"
+                                    data-date="<?= $ticket->created_at; ?>"
+                                    data-category="<?= strtolower($ticket->category); ?>"
+                                    data-priority="<?= strtolower($ticket->priority); ?>"
+                                    data-status="<?= strtolower($ticket->status); ?>"
+                                    onclick="if (!event.target.closest('a')) window.location.href='<?= Config::get('URL'); ?>ticketHandler/index/<?= $ticket->id; ?>'">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= $ticket->id; ?></td>
+                                    <td class="xl:px-6 xl:py-4 lg:px-3 lg:py-2 px-2 py-2 truncate xl:max-w-[200px] lg:max-w-[150px] max-w-[100px] text-sm text-gray-700"><?= htmlentities($ticket->subject); ?></td>
                                     <!-- Remove hidden newlines from description to keep row height consistent -->
-                                    <td class="px-8 py-4 truncate max-w-[250px] text-sm text-gray-500">
-                                        <?= htmlentities(str_replace("\n", "", $ticket->description)); ?>
-                                    </td>
-                                    <td class="px-8 py-4 whitespace-nowrap">
+                                    <td class="xl:px-6 lg:px-4 px-2 py-2 truncate xl:max-w-[200px] lg:max-w-[150px] max-w-[100px] text-sm text-gray-500"><?= htmlentities(str_replace("\n", "", $ticket->description)); ?></td>
+                                    <td class="xl:px-6 lg:px-3 px-2 py-2 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php
                                         if ($ticket->priority === 'high') {
                                             echo 'bg-red-100 text-red-800';
@@ -166,10 +165,8 @@
                                             <?= ucfirst($ticket->priority); ?>
                                         </span>
                                     </td>
-                                    <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-700">
-                                        <?= htmlentities($ticket->category); ?>
-                                    </td>
-                                    <td class="px-8 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><?= htmlentities($ticket->category); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php
                                         if ($ticket->status === 'waiting') {
                                             echo 'bg-blue-100 text-blue-800';
@@ -184,10 +181,8 @@
                                             <?= ucfirst($ticket->status); ?>
                                         </span>
                                     </td>
-                                    <td class="px-8 py-4 whitespace-nowrap text-sm text-gray-700">
-                                        <?= $ticket->created_at; ?>
-                                    </td>
-                                    <td class="px-8 py-4 whitespace-nowrap text-sm font-medium">
+                                    <td class="xl:px-6 xl:py-4 lg:px-3 lg:py-2 px-2 py-2 truncate xl:max-w-[200px] lg:max-w-[100px] max-w-[80px] text-sm text-gray-700"><?= $ticket->created_at; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex justify-center space-x-2">
                                             <a href="<?= Config::get('URL') . 'ticket/edit/' . $ticket->id; ?>"
                                                class="inline-flex items-center px-2.5 py-1.5 border border-blue-100 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all duration-200">

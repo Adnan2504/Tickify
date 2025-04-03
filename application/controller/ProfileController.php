@@ -34,9 +34,10 @@ class ProfileController extends Controller
     public function showProfile($user_id)
     {
         if (isset($user_id)) {
+            $user = UserModel::getPublicProfileOfUser($user_id);
             $this->View->render('profile/showProfile', array(
-                'user' => UserModel::getPublicProfileOfUser($user_id),
-                'user_account_type_long' => UserModel::getAccountTypeLong(Session::get('user_account_type')))
+                    'user' => $user,
+                    'user_account_type_long' => UserModel::getAccountTypeLong($user->user_account_type))
             );
         } else {
             Redirect::home();

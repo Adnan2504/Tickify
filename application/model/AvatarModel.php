@@ -21,8 +21,8 @@ class AvatarModel
     public static function getGravatarLinkByEmail($email)
     {
         return 'http://www.gravatar.com/avatar/' .
-        md5(strtolower(trim($email))) .
-        '?s=' . Config::get('AVATAR_SIZE') . '&d=' . Config::get('GRAVATAR_DEFAULT_IMAGESET') . '&r=' . Config::get('GRAVATAR_RATING');
+            md5(strtolower(trim($email))) .
+            '?s=' . Config::get('AVATAR_SIZE') . '&d=' . Config::get('GRAVATAR_DEFAULT_IMAGESET') . '&r=' . Config::get('GRAVATAR_RATING');
     }
 
     /**
@@ -33,11 +33,12 @@ class AvatarModel
      */
     public static function getPublicAvatarFilePathOfUser($user_has_avatar, $user_id)
     {
+        $timestamp = '?v=' . time();
         if ($user_has_avatar) {
-            return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . $user_id . '.jpg';
+            return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . $user_id . '.jpg' . $timestamp;
         }
 
-        return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . Config::get('AVATAR_DEFAULT_IMAGE');
+        return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . Config::get('AVATAR_DEFAULT_IMAGE') . $timestamp;
     }
 
     /**
@@ -52,11 +53,12 @@ class AvatarModel
         $query = $database->prepare("SELECT user_has_avatar FROM users WHERE user_id = :user_id LIMIT 1");
         $query->execute(array(':user_id' => $user_id));
 
+        $timestamp = '?v=' . time();
         if ($query->fetch()->user_has_avatar) {
-            return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . $user_id . '.jpg';
+            return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . $user_id . '.jpg' . $timestamp;
         }
 
-        return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . Config::get('AVATAR_DEFAULT_IMAGE');
+        return Config::get('URL') . Config::get('PATH_AVATARS_PUBLIC') . Config::get('AVATAR_DEFAULT_IMAGE') . $timestamp;
     }
 
     /**
@@ -68,12 +70,19 @@ class AvatarModel
     {
         // check avatar folder writing rights, check if upload fits all rules
         if (self::isAvatarFolderWritable() AND self::validateImageFile()) {
+            // Set cache control headers
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
 
             // create a jpg file in the avatar folder, write marker to database
             $target_file_path = Config::get('PATH_AVATARS') . Session::get('user_id');
             self::resizeAvatarImage($_FILES['avatar_file']['tmp_name'], $target_file_path, Config::get('AVATAR_SIZE'), Config::get('AVATAR_SIZE'));
             self::writeAvatarToDatabase(Session::get('user_id'));
-            Session::set('user_avatar_file', self::getPublicUserAvatarFilePathByUserId(Session::get('user_id')));
+
+            // Add timestamp to prevent caching
+            $timestamp = time();
+            Session::set('user_avatar_file', self::getPublicUserAvatarFilePathByUserId(Session::get('user_id')) . "?v=" . $timestamp);
             Session::add('feedback_positive', Text::get('FEEDBACK_AVATAR_UPLOAD_SUCCESSFUL'));
         }
     }
