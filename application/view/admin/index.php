@@ -183,9 +183,20 @@
 <script>
     $(document).ready(function(){
         $("#tableSearch").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#userTable tbody tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            var value = $(this).val().toLowerCase().trim();
+            $("#userTable tbody tr, .block.md\\:hidden .bg-white.rounded-xl.shadow-lg.p-4").filter(function() {
+                var combinedText = "";
+                $(this).find("[data-label]").each(function(){
+                    combinedText += $(this).text() + " ";
+                });
+                $(this).find("input").each(function() {
+                    combinedText += $(this).val() + " ";
+                });
+                $(this).find("select").each(function() {
+                    combinedText += $(this).find("option:selected").text() + " ";
+                });
+                combinedText = combinedText.toLowerCase().replace(/\s+/g, " ").trim();
+                $(this).toggle(combinedText.indexOf(value) > -1);
             });
         });
     });
