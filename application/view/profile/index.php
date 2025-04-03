@@ -53,8 +53,8 @@
                     <div class="mb-2">
                         <label class="block text-sm font-semibold text-gray-700">Role</label>
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-              <?= htmlspecialchars(UserModel::getAccountTypeLang($this->availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
-            </span>
+                            <?= htmlspecialchars(UserModel::getAccountTypeLang($this->availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
+                        </span>
                     </div>
                     <!-- Profile -->
                     <div class="mb-2">
@@ -97,9 +97,9 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" data-label="Username"><?= htmlspecialchars($user->user_name, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-label="Email"><?= htmlspecialchars($user->user_email, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td class="px-6 py-4 whitespace-nowrap" data-label="Role">
-                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                    <?= htmlspecialchars(UserModel::getAccountTypeLang($this->availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
-                  </span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                        <?= htmlspecialchars(UserModel::getAccountTypeLang($this->availableAccType, $user->user_account_type), ENT_QUOTES, 'UTF-8'); ?>
+                                    </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-label="Profile">
                                 <a href="<?= Config::get('URL').'profile/showProfile/'.$user->user_id; ?>" class="text-indigo-600 hover:text-indigo-900">
@@ -115,12 +115,23 @@
     </div>
 </div>
 
+<!-- jQuery for search functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $("#customSearch").on("keyup", function(){
-            var value = $(this).val().toLowerCase();
-            $("#users-table tbody tr").filter(function(){
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    $(document).ready(function () {
+        $("#customSearch").on("keyup", function () {
+            const search = $(this).val().toLowerCase().trim();
+
+            $("#users-table tbody tr").each(function () {
+                let text = $(this).text().toLowerCase().trim().replace(/\s+/g, " ");
+                $(this).toggle(text.includes(search));
+            });
+
+            $(".block.md\\:hidden > div.bg-white.rounded-xl.shadow-lg.p-4").each(function () {
+                let cardClone = $(this).clone();
+                cardClone.find("label").remove();
+                let text = cardClone.text().toLowerCase().trim().replace(/\s+/g, " ");
+                $(this).toggle(text.includes(search));
             });
         });
     });

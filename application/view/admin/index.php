@@ -184,20 +184,20 @@
     $(document).ready(function(){
         $("#tableSearch").on("keyup", function() {
             var value = $(this).val().toLowerCase().trim();
-            $("#userTable tbody tr, .block.md\\:hidden .bg-white.rounded-xl.shadow-lg.p-4").filter(function() {
-                var combinedText = "";
-                $(this).find("[data-label]").each(function(){
-                    combinedText += $(this).text() + " ";
+            $("#userTable tbody tr, .block.md\\:hidden .bg-white.rounded-xl.shadow-lg.p-4").each(function(){
+                var clone = $(this).clone();
+                clone.find("label").remove();
+                clone.find("select").remove();
+                var combinedText = clone.text().toLowerCase().replace(/\s+/g, " ").trim();
+                $(this).find("input").each(function(){
+                    combinedText += " " + $(this).val().toLowerCase().trim();
                 });
-                $(this).find("input").each(function() {
-                    combinedText += $(this).val() + " ";
+                $(this).find("select").each(function(){
+                    combinedText += " " + $(this).find("option:selected").text().toLowerCase().trim();
                 });
-                $(this).find("select").each(function() {
-                    combinedText += $(this).find("option:selected").text() + " ";
-                });
-                combinedText = combinedText.toLowerCase().replace(/\s+/g, " ").trim();
                 $(this).toggle(combinedText.indexOf(value) > -1);
             });
         });
     });
 </script>
+
