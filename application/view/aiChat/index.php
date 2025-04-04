@@ -29,7 +29,7 @@ if (!isset($_SESSION['history'])) {
                         if ($message['role'] === 'user') {
                             echo '<div class="flex justify-end mb-3">';
                             echo '<div class="bg-blue-500 text-white rounded-lg py-2 px-4 max-w-[70%] break-words">';
-                            echo htmlspecialchars($message['content']);
+                                echo htmlspecialchars($message['content']);
                             echo '</div>';
                             echo '</div>';
                         } else if ($message['role'] === 'assistant') {

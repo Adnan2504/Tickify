@@ -10,7 +10,7 @@ class AIChatModel {
         $url = "http://localhost:11434/api/chat";
         $headers = ["Content-Type: application/json"];
         $data = [
-            "model" => "llama3.1:latest",
+            "model" => "deepseek-r1:8b",
             "messages" => $history,
             "stream" => false
         ];

@@ -67,8 +67,8 @@ return array(
     'DB_HOST' => '127.0.0.1',
     'DB_NAME' => 'tickify',
     'DB_USER' => 'root',
-    'DB_PASS' => '',
-    'DB_PORT' => '3306',
+    'DB_PASS' => 'root',
+    'DB_PORT' => '3307',
     'DB_CHARSET' => 'utf8',
     /**
      * Configuration for: Captcha size
