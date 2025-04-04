@@ -16,8 +16,13 @@ class ProfileController extends Controller
      */
     public function index()
     {
+
+        if (Session::get('user_account_type') < 4)
+            Redirect::home();
+
         $this->View->render('profile/index', array(
-            'users' => UserModel::getPublicProfilesOfAllUsers())
+            'users' => UserModel::getPublicProfilesOfAllUsers(),
+            'availableAccType' => UserModel::getAvailableAccountTypes()),
         );
     }
 
@@ -29,8 +34,10 @@ class ProfileController extends Controller
     public function showProfile($user_id)
     {
         if (isset($user_id)) {
+            $user = UserModel::getPublicProfileOfUser($user_id);
             $this->View->render('profile/showProfile', array(
-                'user' => UserModel::getPublicProfileOfUser($user_id))
+                    'user' => $user,
+                    'user_account_type_long' => UserModel::getAccountTypeLong($user->user_account_type))
             );
         } else {
             Redirect::home();

@@ -11,14 +11,12 @@ class TicketHandlerController extends Controller
     public function __construct()
     {
         parent::__construct();
-
         Auth::checkAuthentication();
     }
 
     /**
      * This method controls what happens when you move to /ticket/index in your app.
      */
-
     public function index($ticket_id)
     {
         $ticket = TicketHandlerModel::getTicketById($ticket_id);
@@ -59,14 +57,14 @@ class TicketHandlerController extends Controller
             if (isset($_FILES['attachment']) && $_FILES['attachment']['error'] === UPLOAD_ERR_OK) {
                 $upload_dir = Config::get('PATH_IMAGES') . Session::get('user_id') . '/';
                 if (!is_dir($upload_dir)) {
-                    mkdir($upload_dir, 0755, true);  // Create directory if it doesn't exist
+                    mkdir($upload_dir, 0755, true);
                 }
 
                 $filename = uniqid() . '_' . basename($_FILES['attachment']['name']);
                 $target_file = $upload_dir . $filename;
 
                 if (move_uploaded_file($_FILES['attachment']['tmp_name'], $target_file)) {
-                    $attachment_path = 'images/' . Session::get('user_id') . '/' . $filename;  // Save the relative path
+                    $attachment_path = 'images/' . Session::get('user_id') . '/' . $filename;
                 } else {
                     Session::add('feedback_negative', 'Failed to upload the attachment.');
                 }
@@ -74,11 +72,8 @@ class TicketHandlerController extends Controller
 
             $result = TicketHandlerModel::saveMessage($ticket_id, Session::get('user_id'), $message, $attachment_path);
 
-            if ($result) {
-                Session::add('feedback_positive', 'Message sent successfully.');
-            } else {
+            if (!$result)
                 Session::add('feedback_negative', 'An error occurred while sending the message.');
-            }
 
             header('Location: ' . Config::get('URL') . 'ticketHandler/index/' . $ticket_id);
             exit;
@@ -96,12 +91,12 @@ class TicketHandlerController extends Controller
             return;
         }
 
-        $ticket_id = intval($_POST['ticket_id']);
-        $subject = trim($_POST['subject']);
+        $ticket_id   = intval($_POST['ticket_id']);
+        $subject     = trim($_POST['subject']);
         $description = trim($_POST['description']);
-        $priority = trim($_POST['priority']);
-        $category = trim($_POST['category']);
-        $status = trim($_POST['status']);
+        $priority    = trim($_POST['priority']);
+        $category    = trim($_POST['category']);
+        $status      = trim($_POST['status']);
 
         $allowed_statuses = ['open', 'waiting', 'resolved'];
         if (!in_array($status, $allowed_statuses, true)) {
@@ -117,7 +112,8 @@ class TicketHandlerController extends Controller
             return;
         }
 
-        if (TicketModel::updateTicket($ticket_id, $subject, $description, $priority,  $status, $category)) {
+        // Use TicketHandlerModel instead of TicketModel
+        if (TicketHandlerModel::updateTicket($ticket_id, $subject, $description, $priority, $status, $category)) {
             Session::add('feedback_positive', 'Ticket updated successfully.');
         } else {
             Session::add('feedback_negative', 'Failed to update ticket.');
@@ -125,6 +121,7 @@ class TicketHandlerController extends Controller
 
         Redirect::to('ticketHandler/index/' . $ticket_id);
     }
+
 
     public function closeTicket()
     {
@@ -138,8 +135,4 @@ class TicketHandlerController extends Controller
 
         Redirect::to('ticket/index/');
     }
-
-
-
-
 }

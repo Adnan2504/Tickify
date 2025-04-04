@@ -1,27 +1,40 @@
-<div class="container">
-    <h1>LoginController/resetPassword</h1>
-
+<div class="login-container">
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
 
-    <div class="box">
-        <h2>Set new password</h2>
+    <div class="login-content">
+        <div class="login-box">
+            <h1>Reset Password</h1>
+            <p class="login-subtitle">Enter your new password</p>
 
-        <p>FYI: ... Idenfitication process works via password-reset-token (hidden input field)</p>
+            <form method="post" action="<?php echo Config::get('URL'); ?>login/setNewPassword" name="new_password_form">
+                <input type='hidden' name='user_name' value='<?php echo $this->user_name; ?>' />
+                <input type='hidden' name='user_password_reset_hash' value='<?php echo $this->user_password_reset_hash; ?>' />
 
-        <!-- new password form box -->
-        <form method="post" action="<?php echo Config::get('URL'); ?>login/setNewPassword" name="new_password_form">
-            <input type='hidden' name='user_name' value='<?php echo $this->user_name; ?>' />
-            <input type='hidden' name='user_password_reset_hash' value='<?php echo $this->user_password_reset_hash; ?>' />
-            <label for="reset_input_password_new">New password (min. 6 characters)</label>
-            <input id="reset_input_password_new" class="reset_input" type="password"
-                   name="user_password_new" pattern=".{6,}" required autocomplete="off" />
-            <label for="reset_input_password_repeat">Repeat new password</label>
-            <input id="reset_input_password_repeat" class="reset_input" type="password"
-                   name="user_password_repeat" pattern=".{6,}" required autocomplete="off" />
-            <input type="submit"  name="submit_new_password" value="Submit new password" />
-        </form>
+                <div class="form-group">
+                    <label for="reset_input_password_new">New Password</label>
+                    <input id="reset_input_password_new" class="reset_input" type="password"
+                           name="user_password_new" pattern=".{6,}" 
+                           placeholder="Enter new password (min. 6 characters)"
+                           required autocomplete="off" />
+                </div>
 
-        <a href="<?php echo Config::get('URL'); ?>login/index">Back to Login Page</a>
+                <div class="form-group">
+                    <label for="reset_input_password_repeat">Confirm Password</label>
+                    <input id="reset_input_password_repeat" class="reset_input" type="password"
+                           name="user_password_repeat" pattern=".{6,}" 
+                           placeholder="Confirm new password"
+                           required autocomplete="off" />
+                </div>
+
+                <button type="submit" name="submit_new_password" class="submit-button">
+                    Reset Password
+                </button>
+            </form>
+
+            <div class="back-to-login">
+                <a href="<?php echo Config::get('URL'); ?>login/index">Back to Login</a>
+            </div>
+        </div>
     </div>
 </div>

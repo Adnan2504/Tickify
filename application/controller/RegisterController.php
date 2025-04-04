@@ -14,6 +14,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         parent::__construct();
+        Auth::checkAdminAuthentication();
     }
 
     /**
@@ -34,7 +35,7 @@ class RegisterController extends Controller
         $registration_successful = RegistrationModel::registerNewUser();
 
         if ($registration_successful) {
-            Redirect::to('login/index');
+            Redirect::to('index/index');
         } else {
             Redirect::to('register/index');
         }

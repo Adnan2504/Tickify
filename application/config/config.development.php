@@ -67,7 +67,7 @@ return array(
     'DB_HOST' => '127.0.0.1',
     'DB_NAME' => 'tickify',
     'DB_USER' => 'root',
-    'DB_PASS' => '',
+    'DB_PASS' => 'root',
     'DB_PORT' => '3307',
     'DB_CHARSET' => 'utf8',
     /**
@@ -113,7 +113,7 @@ return array(
     'GRAVATAR_DEFAULT_IMAGESET' => 'mm',
     'GRAVATAR_RATING' => 'pg',
     'AVATAR_SIZE' => 44,
-    'AVATAR_JPEG_QUALITY' => 85,
+    'AVATAR_JPEG_QUALITY' => 95,
     'AVATAR_DEFAULT_IMAGE' => 'default.jpg',
     /**
      * Configuration for: Encryption Keys

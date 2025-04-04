@@ -22,8 +22,38 @@ class TicketController extends Controller
 
     public function index()
     {
+        $tickets = TicketModel::getAllTickets();
+
+        // Get filter parameters
+        $selectedPriorities = isset($_GET['priority']) ? $_GET['priority'] : [];
+        $selectedStatuses = isset($_GET['status']) ? $_GET['status'] : [];
+        $sortOrder = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
+
+        // Apply filters
+        if (!empty($selectedPriorities) || !empty($selectedStatuses)) {
+            $tickets = array_filter($tickets, function($ticket) use ($selectedPriorities, $selectedStatuses) {
+                $priorityMatch = empty($selectedPriorities) || in_array($ticket->priority, $selectedPriorities);
+                $statusMatch = empty($selectedStatuses) || in_array($ticket->status, $selectedStatuses);
+                return $priorityMatch && $statusMatch;
+            });
+        }
+
+        // Apply sorting
+        if ($sortOrder === 'oldest') {
+            usort($tickets, function($a, $b) {
+                return strtotime($a->created_at) - strtotime($b->created_at);
+            });
+        } else {
+            usort($tickets, function($a, $b) {
+                return strtotime($b->created_at) - strtotime($a->created_at);
+            });
+        }
+
         $this->View->render('ticket/index', array(
-            'tickets' => TicketModel::getAllTickets()
+            'tickets' => $tickets,
+            'selectedPriorities' => $selectedPriorities,
+            'selectedStatuses' => $selectedStatuses,
+            'sortOrder' => $sortOrder
         ));
     }
 

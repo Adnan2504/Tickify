@@ -5,12 +5,12 @@ class AIChatModel {
             return ["error" => "Prompt cannot be empty."];
         }
 
-        $history[] = ["role" => "user", "content" => $prompt];
+        $history[] = ["role" => "user", "content" => $prompt, "timestamp" => time()];
 
         $url = "http://localhost:11434/api/chat";
         $headers = ["Content-Type: application/json"];
         $data = [
-            "model" => "llama3.1:latest",
+            "model" => "deepseek-r1:8b",
             "messages" => $history,
             "stream" => false
         ];
@@ -29,7 +29,7 @@ class AIChatModel {
         if ($statusCode === 200) {
             $responseData = json_decode($response, true);
             if (isset($responseData['message']['content'])) {
-                $history[] = ["role" => "assistant", "content" => $responseData['message']['content']];
+                $history[] = ["role" => "assistant", "content" => $responseData['message']['content'], "timestamp" => time()];
                 return ["response" => $responseData['message']['content']];
             } else {
                 return ["error" => "Invalid response format."];

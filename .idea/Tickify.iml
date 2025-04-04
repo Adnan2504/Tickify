@@ -2,10 +2,12 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/application/core" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/application/model" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests/core" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/application/core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/application/core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/application/core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/application/model" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/application/model" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/application/model" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />

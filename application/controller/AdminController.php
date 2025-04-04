@@ -20,19 +20,19 @@ class AdminController extends Controller
     public function index()
     {
         $this->View->render('admin/index', array(
-                'users' => UserModel::getPublicProfilesOfAllUsers())
+                'users' => UserModel::getPublicProfilesOfAllUsers(),
+                'availableAccType' => UserModel::getAvailableAccountTypes()),
         );
     }
 
     public function actionAccountSettings()
     {
-        AdminModel::setAccountType(
+        AdminModel::updateUserProfile(
             Request::post('account_type'),
             Request::post('user_id'),
             Request::post('userNameInput'),
             Request::post('userEmail')
         );
-
         Redirect::to("admin");
     }
 }

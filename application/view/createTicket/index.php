@@ -1,38 +1,62 @@
-<div class="container">
-    <div class="box">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 overflow-hidden scrollbar-hide">
+    <div class="max-w-xl mx-auto px-4">
+        <!-- Centered Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create New Ticket</h1>
+        </div>
 
-        <!-- echo out the system feedback (error and success messages) -->
-        <?php $this->renderFeedbackMessages(); ?>
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <!-- System Feedback -->
+            <?php $this->renderFeedbackMessages(); ?>
 
+            <form action="<?= config::get("URL"); ?>ticket/createTicket" method="post">
+                <!-- Subject field -->
+                <div class="mb-4">
+                    <label for="subject" class="block text-gray-700 font-medium mb-2">Subject:</label>
+                    <input type="text" id="subject" name="subject" required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
 
-        <form action="<?= config::get("URL"); ?>ticket/createTicket" method="post" style="display: flex; flex-direction: column; gap: 10px; width: 400px; margin: 0 auto;">
-            <label>
-                Subject:
-                <input type="text" name="subject" style="flex: 1;">
-            </label>
+                <!-- Description field -->
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 font-medium mb-2">Ticket Description:</label>
+                    <textarea id="description" name="description" rows="4" required
+                              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
 
-            <label>
-                Ticket Description:
-                <textarea name="description" style="flex: 1;"></textarea>
-            </label>
+                <!-- Priority field -->
+                <div class="mb-4">
+                    <label for="priority" class="block text-gray-700 font-medium mb-2">Priority:</label>
+                    <select id="priority" name="priority" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="low">Low</option>
+                        <option value="mid">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
 
-            <label>
-                Priority:
-                <select name="priority" style="flex: 1;">
-                    <option value="low">Low</option>
-                    <option value="mid">Mid</option>
-                    <option value="high">High</option>
-                </select>
-            </label>
+                <!-- Category field -->
+                <div class="mb-4">
+                    <label for="category" class="block text-gray-700 font-medium mb-2">Category:</label>
+                    <select id="category" name="category" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="Bug">Bug</option>
+                        <option value="Feature Request">Feature Request</option>
+                        <option value="Improvement">Improvement</option>
+                        <option value="Task">Task</option>
+                        <option value="Documentation">Documentation</option>
+                        <option value="Support">Support</option>
+                    </select>
+                </div>
 
-            <label>
-                Category:
-                <input type="text" name="category" style="flex: 1;">
-            </label>
-
-            <button type="submit" style="padding: 10px;">Submit</button>
-        </form>
-
-
+                <!-- Submit button -->
+                <div class="flex justify-end">
+                    <button type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                        Create Ticket
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
